@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronDownIcon } from "@/components/icons";
 import { NavigationMenu } from "@base-ui-components/react/navigation-menu";
 import Link from "next/link";
@@ -11,7 +13,7 @@ import {
   generateLinkKey,
 } from "@/components/ui/navbar";
 import { useMemo } from "react";
-
+import { usePrefersReducedMotion } from "@/hooks";
 
 /**
  * Primary menu item component for the desktop navigation bar.
@@ -50,7 +52,7 @@ const NavbarMenuItem = ({
       </NavigationMenu.Item>
     );
   }
-
+  const prefersReducedMotion = usePrefersReducedMotion();
   const finalLayout = useMemo(
     () => determineLayout(links, layout),
     [links, layout]
@@ -62,14 +64,21 @@ const NavbarMenuItem = ({
 
   return (
     <NavigationMenu.Item>
-      <NavigationMenu.Trigger className={NAV_TRIGGER_CLASS}>
+      <NavigationMenu.Trigger
+        aria-haspopup="true"
+        aria-expanded={undefined}
+        className={NAV_TRIGGER_CLASS}
+      >
         {name}
         <NavigationMenu.Icon className="transition-transform duration-200 ease-in-out data-[popup-open]:rotate-180">
-          <ChevronDownIcon />
+          <ChevronDownIcon aria-hidden="true" />
         </NavigationMenu.Icon>
       </NavigationMenu.Trigger>
 
-      <NavigationMenu.Content className={NAV_CONTENT_MAIN_CLASS}>
+      <NavigationMenu.Content
+        style={prefersReducedMotion ? { transition: "none" } : undefined}
+        className={NAV_CONTENT_MAIN_CLASS}
+      >
         <ul className={containerClass}>
           {links.map((item, idx) => (
             <li key={`${generateLinkKey(item.href, idx)}`}>

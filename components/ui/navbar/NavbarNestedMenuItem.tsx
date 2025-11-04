@@ -11,6 +11,8 @@ import {
   NestedLink,
   NavbarLinkContent,
 } from "@/components/ui/navbar";
+import { usePrefersReducedMotion } from "@/hooks";
+import { NavbarNestedMenuItemProps } from "./types";
 
 /**
  * Recursive component that renders nested navigation menu items.
@@ -28,14 +30,15 @@ import {
  *
  * @param {{ link: NestedLink }} props - Component props.
  * @param {NestedLink} props.link - The navigation link data, potentially containing child links.
- * @returns {JSX.Element} The rendere*
+ * @returns {JSX.Element} The rendered nested navigation item with optional submenu.
  */
-const NavbarNestedMenuItem = ({ link }: { link: NestedLink }) => {
+const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
   const hasChildren = link.children && link.children.length > 0;
-
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const Wrapper = depth === 0 ? NavigationMenu.Root : "div";
   if (!hasChildren) {
     return (
-      <Link href={link.href} className={NAV_LINK_CARD_CLASS}>
+      <Link href={link.href ?? "#"} className={NAV_LINK_CARD_CLASS}>
         <NavbarLinkContent
           title={link.title}
           description={link.description}
@@ -46,11 +49,23 @@ const NavbarNestedMenuItem = ({ link }: { link: NestedLink }) => {
   }
 
   return (
-    <NavigationMenu.Root className="list-none" orientation="vertical">
+    <Wrapper
+      {...(depth === 0
+        ? { className: "list-none", orientation: "vertical" }
+        : { role: "group", className: "flex flex-col" })}
+    >
       <NavigationMenu.Item>
-        <NavigationMenu.Trigger className={NAV_LINK_CARD_CLASS}>
-          <div className="flex items-start gap-3 w-full pr-8">
-            {link.icon && <div className="mt-0.5">{link.icon}</div>}
+        <NavigationMenu.Trigger
+          aria-haspopup="menu"
+          aria-expanded={undefined}
+          className={NAV_LINK_CARD_CLASS}
+        >
+          <div className="flex items-start gap-3 w-full pr-8 cursor-pointer">
+            {link.icon && (
+              <div className="mt-0.5" aria-hidden="true">
+                {link.icon}
+              </div>
+            )}
             <div className="flex-7 min-w-0 w-full">
               <span className="m-0 mb-1 text-base leading-5 font-medium block">
                 {link.title}
@@ -63,7 +78,7 @@ const NavbarNestedMenuItem = ({ link }: { link: NestedLink }) => {
             </div>
             <div className="flex flex-1 items-center justify-end w-5">
               <NavigationMenu.Icon className="absolute top-1/2 right-2.5 flex h-2.5 w-2.5 -translate-y-1/2 items-center justify-center transition-transform duration-200 ease-in-out data-[popup-open]:rotate-180">
-                <ChevronRightIcon />
+                <ChevronRightIcon aria-hidden="true" />
               </NavigationMenu.Icon>
             </div>
           </div>
@@ -72,30 +87,40 @@ const NavbarNestedMenuItem = ({ link }: { link: NestedLink }) => {
         <NavigationMenu.Content className={NAV_CONTENT_CLASS}>
           <div className="flex flex-col justify-center gap-0">
             {link.children?.map((child, idx) => (
-              <NavbarNestedMenuItem key={`${child.href}-${idx}`} link={child} />
+              <NavbarNestedMenuItem
+                key={`${child.href}-${idx}`}
+                link={child}
+                depth={(depth ?? 0) + 1}
+              />
             ))}
           </div>
         </NavigationMenu.Content>
       </NavigationMenu.Item>
 
-      <NavigationMenu.Portal>
-        <NavigationMenu.Positioner
-          sideOffset={24}
-          alignOffset={-24}
-          align="end"
-          side="right"
-          className={NAV_POSITIONER_CLASS}
-          style={NAV_ANIMATION_STYLE}
-        >
-          <NavigationMenu.Popup className={`${NAV_POPUP_CLASS} w-[300px]`}>
-            <NavigationMenu.Arrow className={NAV_ARROW_CLASS}>
-              <ArrowIcon />
-            </NavigationMenu.Arrow>
-            <NavigationMenu.Viewport className="relative h-full w-full overflow-hidden" />
-          </NavigationMenu.Popup>
-        </NavigationMenu.Positioner>
-      </NavigationMenu.Portal>
-    </NavigationMenu.Root>
+      {depth === 0 && (
+        <NavigationMenu.Portal>
+          <NavigationMenu.Positioner
+            sideOffset={24}
+            alignOffset={-24}
+            align="end"
+            side="right"
+            className={NAV_POSITIONER_CLASS}
+            style={
+              prefersReducedMotion
+                ? { transition: "none", animation: "none" }
+                : NAV_ANIMATION_STYLE
+            }
+          >
+            <NavigationMenu.Popup className={`${NAV_POPUP_CLASS} w-[300px]`}>
+              <NavigationMenu.Arrow className={NAV_ARROW_CLASS}>
+                <ArrowIcon aria-hidden="true" />
+              </NavigationMenu.Arrow>
+              <NavigationMenu.Viewport className="relative h-full w-full overflow-hidden" />
+            </NavigationMenu.Popup>
+          </NavigationMenu.Positioner>
+        </NavigationMenu.Portal>
+      )}
+    </Wrapper>
   );
 };
 

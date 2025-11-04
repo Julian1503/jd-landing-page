@@ -56,7 +56,10 @@ const Logo = ({
   textClassName,
 }: LogoProps) => {
   const content = (
-    <div className={cn("flex items-center p-3 gap-3", className)}>
+    <figure
+      role="group"
+      className={cn("flex items-center p-3 gap-3", className)}
+    >
       <div
         className={cn(
           "relative rounded-full overflow-hidden transition-all flex-shrink-0",
@@ -70,25 +73,19 @@ const Logo = ({
           alt={imageAlt}
           fill
           className="object-cover"
-          priority
+          priority={href === "/" ? true : false}
         />
       </div>
 
       {showText && (text || subtext) && (
-        <div className={cn("flex flex-col", textClassName)}>
-          {text && (
-            <span className={LOGO_TEXT_STYLES[textStyle]}>
-              {text}
-            </span>
-          )}
+        <figcaption className={cn("flex flex-col", textClassName)}>
+          {text && <span className={LOGO_TEXT_STYLES[textStyle]}>{text}</span>}
           {subtext && (
-            <span className={LOGO_SUBTEXT_STYLES[subtextStyle]}>
-              {subtext}
-            </span>
+            <span className={LOGO_SUBTEXT_STYLES[subtextStyle]}>{subtext}</span>
           )}
-        </div>
+        </figcaption>
       )}
-    </div>
+    </figure>
   );
 
   if (href) {
@@ -96,8 +93,7 @@ const Logo = ({
       <Link
         href={href}
         className="transition-transform hover:scale-105 active:scale-95 inline-block"
-        aria-label={`Go to ${imageAlt}`}
-      >
+        aria-label={!showText ? `Go to ${imageAlt}` : undefined}      >
         {content}
       </Link>
     );

@@ -6,10 +6,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MobileMenuButton from "@/components/ui/navbar/MobileMenuButton";
 import { NavbarMobileProps } from "./types";
+import { usePrefersReducedMotion } from "@/hooks";
 
 const MobileMenuOverlay = lazy(() => import("@/components/ui/navbar/MobileMenuOverlay"));
 const MobileMenuPanel = lazy(() => import("@/components/ui/navbar/MobileMenuPanel"));
@@ -34,6 +35,9 @@ const MobileMenuPanel = lazy(() => import("@/components/ui/navbar/MobileMenuPane
  */
 const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const duration = prefersReducedMotion ? 0 : 0.2;
 
   const handleClose = () => setMobileMenuOpen(false);
   const handleToggle = () => setMobileMenuOpen(!mobileMenuOpen);
@@ -41,6 +45,7 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
   return (
     <div className="md:hidden h-full w-full">
       <motion.div 
+        ref={triggerRef}
         className={cn(
           "flex items-center justify-end rounded-md p-2 ",
           "bg-[var(--background)] text-[var(--foreground)] border-[var(--border)]",
@@ -48,9 +53,14 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
         )}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: duration }}
       >
-        <MobileMenuButton isOpen={mobileMenuOpen} onToggle={handleToggle} />
+        <MobileMenuButton
+          isOpen={mobileMenuOpen}
+          triggerRef={triggerRef}
+          onToggle={handleToggle}
+          aria-controls="mobile-menu-panel"
+          aria-expanded={mobileMenuOpen} />
       </motion.div>
 
       <AnimatePresence>
@@ -58,7 +68,7 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
           <Suspense fallback={null}>
             <>
               <MobileMenuOverlay onClose={handleClose} />
-              <MobileMenuPanel items={items} onClose={handleClose} />
+              <MobileMenuPanel triggerRef={triggerRef} items={items} onClose={handleClose} />
             </>
           </Suspense>
         )}

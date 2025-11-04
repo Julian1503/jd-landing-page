@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { usePrefersReducedMotion } from "@/hooks";
 
 /**
  * Header section of the mobile navigation menu displaying the current user's info.
@@ -18,19 +19,22 @@ import Image from "next/image";
 
 const MobileMenuUserHeader = () => {
   const { user } = useUser();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <motion.div 
+      role="group"
+      aria-label="User account information"
       className="p-6 border-b border-[var(--border)] bg-gradient-to-br from-[var(--primary)]/10 to-transparent"
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1 }}
+      transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.1 }}
     >
       <div className="flex items-center gap-3">
         <div className="h-14 w-14 rounded-full overflow-hidden ring-2 ring-[var(--primary)]/20">
           <Image
             src={user?.imageUrl || "/images/avatar-default.svg"}
-            alt="User avatar"
+            alt={user?.fullName ? `${user.fullName}'s avatar` : "User avatar"}
             width={56}
             height={56}
             className="object-cover"

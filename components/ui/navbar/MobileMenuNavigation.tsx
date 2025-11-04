@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { memo } from "react";
 import {
   MOBILE_SECTION_TITLE_CLASS,
   MOBILE_NAV_ITEM_CLASS, 
@@ -7,6 +8,7 @@ import {
   MobileMenuNavigationProps,
   getStaggerDelay,
 } from "@/components/ui/navbar";
+import { usePrefersReducedMotion } from "@/hooks";
 
 /**
  * Mobile navigation section with animated links.
@@ -16,13 +18,16 @@ import {
  * @returns {JSX.Element}
  */
 
-const MobileMenuNavigation = ({
+const MobileMenuNavigation = memo(({
   items,
   onItemClick,
 }: MobileMenuNavigationProps) => {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
-    <div className="mb-4">
-      <h3 className={MOBILE_SECTION_TITLE_CLASS}>Navigation</h3>
+    <section 
+      aria-labelledby="mobile-nav-heading">
+      <h3 id="mobile-nav-heading" className={MOBILE_SECTION_TITLE_CLASS}>Navigation</h3>
       <div className="space-y-1">
         {items.map((item, idx) => (
           <motion.div
@@ -30,8 +35,8 @@ const MobileMenuNavigation = ({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
-              delay: getStaggerDelay(idx),
-              duration: 0.3,
+              delay: prefersReducedMotion ? 0 : getStaggerDelay(idx),
+              duration: prefersReducedMotion ? 0 : 0.3,
             }}
           >
             {item.href && !item.links ? (
@@ -39,12 +44,13 @@ const MobileMenuNavigation = ({
                 href={item.href}
                 onClick={onItemClick}
                 className={MOBILE_NAV_ITEM_CLASS}
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={prefersReducedMotion ? undefined : { x: 4 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
                 <span>{item.name}</span>
                 <ChevronRight
                   size={16}
+                  aria-hidden="true"
                   className={NAV_ICON_CLASS}
                 />
               </motion.a>
@@ -57,21 +63,23 @@ const MobileMenuNavigation = ({
                   <motion.a
                     key={link.href}
                     href={link.href}
-                    onClick={onItemClick}
+                    onClick={onItemClick}  
+                    aria-label={`Go to ${link.title}`}
                     className="block py-2.5 px-4 ml-2 rounded-lg hover:bg-[var(--muted)] transition-colors group"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                      delay: getStaggerDelay(idx) + linkIdx * 0.03,
-                      duration: 0.3,
+                      delay: prefersReducedMotion ? 0 : getStaggerDelay(idx) + linkIdx * 0.03,
+                      duration: prefersReducedMotion ? 0 : 0.3,
                     }}
-                    whileHover={{ x: 4 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={prefersReducedMotion ? undefined : { x: 4 }}
+                    whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
                   >
                     <div className="font-medium text-sm flex items-center justify-between">
                       {link.title}
                       <ChevronRight
                         size={14}
+                        aria-hidden="true"
                         className={NAV_ICON_CLASS}
                       />
                     </div>
@@ -85,8 +93,8 @@ const MobileMenuNavigation = ({
           </motion.div>
         ))}
       </div>
-    </div>
+    </section>
   );
-};
+});
 
 export default MobileMenuNavigation;

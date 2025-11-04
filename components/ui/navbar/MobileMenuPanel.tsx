@@ -8,7 +8,7 @@ import {
   MobileMenuUserHeader,
   MobileMenuAccountSection,
 } from "@/components/ui/navbar";
-import { useHeaderHeight } from "@/hooks/useHeaderHeight";
+import { useEscapeKey, useFocusTrap, useHeaderHeight } from "@/hooks";
 
 /**
  * Sliding panel component for the mobile navigation menu.
@@ -26,11 +26,21 @@ import { useHeaderHeight } from "@/hooks/useHeaderHeight";
  * @param {() => void} props.onClose - Function to close the panel when an item is clicked.
  * @returns {JSX.Element} The animated mobile menu panel.
  */
-const MobileMenuPanel = ({ items = [], onClose }: MobileMenuPanelProps) => {
+const MobileMenuPanel = ({ items = [], onClose, triggerRef }: MobileMenuPanelProps) => {
   const headerHeight = useHeaderHeight();
+  
+  const panelRef = useFocusTrap(true, triggerRef);
+  useEscapeKey(onClose);
 
   return (
     <motion.div
+      ref={triggerRef}
+      id="mobile-menu-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation menu"
+      aria-labelledby="mobile-menu-heading"
+      aria-describedby="mobile-menu-desc"
       className="fixed right-0 z-50 w-[85vw] max-w-sm bg-[var(--background)] shadow-xl overflow-y-auto border-l border-[var(--border)]"
       style={{
         top: `${headerHeight}px`,
@@ -45,14 +55,17 @@ const MobileMenuPanel = ({ items = [], onClose }: MobileMenuPanelProps) => {
         stiffness: 200,
       }}
     >
+      <p id="mobile-menu-desc" className="sr-only">
+        Use the Escape key or tap outside to close the mobile menu.
+      </p>
       <SignedIn>
         <MobileMenuUserHeader />
       </SignedIn>
 
-      <div className="p-6">
+      <nav className="p-6">
         <MobileMenuNavigation items={items} onItemClick={onClose} />
         <MobileMenuAccountSection onClose={onClose} />
-      </div>
+      </nav>
     </motion.div>
   );
 };

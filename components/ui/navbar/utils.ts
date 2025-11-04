@@ -39,7 +39,7 @@ const determineLayout = (
   layout: NavbarMenuItemProps["layout"]
 ): LayoutType => {
   if (layout && layout !== "auto") return layout;
-  return (links?.length || 0) <= 4 ? "grid" : "list";
+  return (links?.length || 0) <= 4 ? "grid" : "list" as const;
 };
 
 /**
@@ -70,6 +70,6 @@ const getStaggerDelay = (
  * @returns {string} A unique key string.
  */
 const generateLinkKey = (href: string, index: number): string =>
-  `${href}-${index}`;
+  `${href}-${index}` as const;
 
 export { determineLayout, getStaggerDelay, generateLinkKey, getContainerClass };

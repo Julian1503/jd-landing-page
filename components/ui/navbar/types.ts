@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 
 /**
  * Basic structure for a single navigation link.
@@ -21,6 +21,13 @@ type NestedLink = BaseLink & {
   /** Optional array of sublinks (for multi-level navigation). */
   children?: NestedLink[];
 };
+/***
+ * 
+ */
+type NavbarNestedMenuItemProps =  {
+  link: NestedLink;
+  depth?: number;
+}
 
 /**
  * Available layout options for menu sections.
@@ -49,14 +56,9 @@ type NavbarMenuItemProps = {
 };
 
 /**
- * Subset of BaseLink fields used for displaying link content.
- */
-type LinkType = "title" | "description" | "icon";
-
-/**
  * Props for the reusable link content block (icon, title, description).
  */
-type NavbarLinkContentProps = Pick<BaseLink, LinkType>;
+type NavbarLinkContentProps = Pick<BaseLink, "title" | "description" | "icon">;
 
 /**
  * Props for the account management section in the mobile menu.
@@ -74,6 +76,8 @@ type MobileMenuButtonProps = {
   isOpen: boolean;
   /** Toggles the mobile menu open or closed. */
   onToggle: () => void;
+  /** Reference from parent */
+  triggerRef?: RefObject<HTMLDivElement | null>;
 };
 
 /**
@@ -100,6 +104,8 @@ type MobileMenuOverlayProps = {
 type MobileMenuPanelProps = {
   /** Navigation items displayed inside the mobile menu. */
   items: NavbarMenuItemProps[];
+  /** Reference from parent */
+  triggerRef?: RefObject<HTMLDivElement | null>;
   /** Callback triggered to close the menu panel. */
   onClose: () => void;
 };
@@ -115,4 +121,5 @@ export type {
   MobileMenuButtonProps,
   MobileMenuNavigationProps,
   MobileMenuOverlayProps,
+  NavbarNestedMenuItemProps
 };

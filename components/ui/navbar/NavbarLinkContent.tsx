@@ -1,4 +1,5 @@
 import { NavbarLinkContentProps } from "@/components/ui/navbar";
+import { memo } from "react";
 
 /**
  * Reusable content layout for navigation links in the navbar.
@@ -16,16 +17,18 @@ import { NavbarLinkContentProps } from "@/components/ui/navbar";
  * @param {React.ReactNode} [props.icon] - Optional icon element displayed before the text.
  * @returns {JSX.Element} The formatted link content block.
  */
-const NavbarLinkContent = ({ title, description, icon }: NavbarLinkContentProps) => (
+
+const NavbarLinkContent = memo(({ title, description, icon }: NavbarLinkContentProps) => (
   <div className="flex items-start gap-3">
-    {icon && <div className="mt-0.5">{icon}</div>}
+    {icon && <div className="mt-0.5" aria-hidden="true">{icon}</div>}
     <div>
-      <h3 className="m-0 mb-1 text-base leading-5 font-medium">{title}</h3>
+      <span className="block mb-1 text-base leading-5 font-medium">{title}</span>
       {description && (
         <p className="m-0 text-sm leading-5 text-gray-500">{description}</p>
       )}
     </div>
   </div>
-);
+));
 
+NavbarLinkContent.displayName = "NavbarLinkContent";
 export default NavbarLinkContent;
