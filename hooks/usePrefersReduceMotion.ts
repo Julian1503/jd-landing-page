@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export const usePrefersReducedMotion = (callback: void): boolean => {
+export const usePrefersReducedMotion = (): boolean => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export const usePrefersReducedMotion = (callback: void): boolean => {
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [callback]);
+  }, []);
 
   return prefersReducedMotion;
 };

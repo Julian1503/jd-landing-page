@@ -19,16 +19,25 @@ export const useHeaderHeight = (
     const header = document.querySelector<HTMLElement>(selector);
     if (!header) return;
 
+    let rafId: number;
     const updateHeight = (): void => {
-      setHeaderHeight(header.getBoundingClientRect().height);
+      rafId = requestAnimationFrame(() => {
+        setHeaderHeight(header.getBoundingClientRect().height);
+      });
     };
 
     updateHeight();
 
-    const resizeObserver = new ResizeObserver(updateHeight);
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeight();
+    });
+    
     resizeObserver.observe(header);
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+    };
   }, [selector]);
 
   return headerHeight;

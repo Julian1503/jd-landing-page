@@ -13,7 +13,7 @@ import { NavbarMenuItemProps } from "@/components/ui/navbar/types";
  *
  * This dataset is mainly used for development, testing, or demo purposes.
  */
-const data: NavbarMenuItemProps[] = [
+const data: Readonly<NavbarMenuItemProps[]> = Object.freeze([
   {
     name: "Item one",
     showSeparatorAfter: true,
@@ -74,6 +74,6 @@ const data: NavbarMenuItemProps[] = [
     href: "https://localhost:3000",
     showSeparatorAfter: true,
   },
-];
+]);
 
 export {data}

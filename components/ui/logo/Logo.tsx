@@ -55,6 +55,14 @@ const Logo = ({
   imageClassName,
   textClassName,
 }: LogoProps) => {
+  if (!imageSrc || typeof imageSrc !== "string") {
+    console.error("Logo: imageSrc is required and must be a string");
+    return null;
+  }
+
+  if (!imageAlt) {
+    console.warn("Logo: imageAlt is recommended for accessibility");
+  }
   const content = (
     <figure
       role="group"
@@ -93,7 +101,8 @@ const Logo = ({
       <Link
         href={href}
         className="transition-transform hover:scale-105 active:scale-95 inline-block"
-        aria-label={!showText ? `Go to ${imageAlt}` : undefined}      >
+        aria-label={showText ? undefined : `Navigate to ${text || imageAlt}`}
+      >
         {content}
       </Link>
     );

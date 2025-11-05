@@ -28,9 +28,10 @@ const MobileMenuButton = memo(({ isOpen, onToggle, triggerRef }: MobileMenuButto
     <motion.button
       ref={buttonRef}
       onClick={onToggle}
-      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
       aria-expanded={isOpen}
-      aria-controls="mobile-navigation"      
+      aria-controls="mobile-menu-panel"
+      aria-haspopup="dialog"
       className="p-2 hover:bg-[var(--muted)] rounded-lg transition-colors"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

@@ -19,10 +19,12 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
       'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
     );
 
+    const previouslyFocused = document.activeElement as HTMLElement;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    first?.focus();
-
+    
+    if (first) first.focus();
+    
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Tab" || focusable.length === 0) return;
 
@@ -38,7 +40,11 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
     container.addEventListener("keydown", handleKeyDown);
     return () => {
       container.removeEventListener("keydown", handleKeyDown);
-      triggerRef?.current?.focus();
+      if (previouslyFocused && previouslyFocused.focus) {
+        previouslyFocused.focus();
+      } else if (triggerRef?.current?.focus) {
+        triggerRef.current.focus();
+      }
     };
   }, [isActive, triggerRef]);
 

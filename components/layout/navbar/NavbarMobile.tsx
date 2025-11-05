@@ -1,19 +1,19 @@
-/**
- * Mobile navigation bar implementation.
- * Provides a toggleable drawer-style menu with overlay and animated transitions.
- */
-
 "use client";
 
 import { cn } from "@/lib/utils";
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MobileMenuButton from "@/components/ui/navbar/MobileMenuButton";
 import { NavbarMobileProps } from "./types";
 import { usePrefersReducedMotion } from "@/hooks";
+import { useNavbarMobile } from "@/hooks/useNavbarMobile";
 
-const MobileMenuOverlay = lazy(() => import("@/components/ui/navbar/MobileMenuOverlay"));
-const MobileMenuPanel = lazy(() => import("@/components/ui/navbar/MobileMenuPanel"));
+const MobileMenuOverlay = lazy(
+  () => import("@/components/ui/navbar/MobileMenuOverlay")
+);
+const MobileMenuPanel = lazy(
+  () => import("@/components/ui/navbar/MobileMenuPanel")
+);
 
 /**
  * Mobile version of the main navigation bar.
@@ -34,21 +34,28 @@ const MobileMenuPanel = lazy(() => import("@/components/ui/navbar/MobileMenuPane
  * @returns {JSX.Element} The responsive mobile navigation bar.
  */
 const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const { isOpen, triggerRef, handleClose, handleToggle } = useNavbarMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
   const duration = prefersReducedMotion ? 0 : 0.2;
+  const [shouldPreload, setShouldPreload] = useState(false);
 
-  const handleClose = () => setMobileMenuOpen(false);
-  const handleToggle = () => setMobileMenuOpen(!mobileMenuOpen);
+  useEffect(() => {
+    if (shouldPreload) {
+      import("@/components/ui/navbar/MobileMenuOverlay");
+      import("@/components/ui/navbar/MobileMenuPanel");
+    }
+  }, [shouldPreload]);
 
   return (
-    <div className="md:hidden h-full w-full">
-      <motion.div 
+    <div
+      className="md:hidden h-full w-full"
+      onPointerEnter={() => setShouldPreload(true)}
+    >
+      <motion.div
         ref={triggerRef}
         className={cn(
           "flex items-center justify-end rounded-md p-2 ",
-          "bg-[var(--background)] text-[var(--foreground)] border-[var(--border)]",
+          "bg-background text-[var(--foreground)] border-[var(--border)]",
           className
         )}
         initial={{ opacity: 0, y: -20 }}
@@ -56,19 +63,24 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
         transition={{ duration: duration }}
       >
         <MobileMenuButton
-          isOpen={mobileMenuOpen}
+          isOpen={isOpen}
           triggerRef={triggerRef}
           onToggle={handleToggle}
           aria-controls="mobile-menu-panel"
-          aria-expanded={mobileMenuOpen} />
+          aria-expanded={isOpen}
+        />
       </motion.div>
 
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {isOpen && (
           <Suspense fallback={null}>
             <>
               <MobileMenuOverlay onClose={handleClose} />
-              <MobileMenuPanel triggerRef={triggerRef} items={items} onClose={handleClose} />
+              <MobileMenuPanel
+                triggerRef={triggerRef}
+                items={items}
+                onClose={handleClose}
+              />
             </>
           </Suspense>
         )}

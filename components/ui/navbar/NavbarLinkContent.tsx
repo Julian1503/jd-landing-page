@@ -1,5 +1,6 @@
 import { NavbarLinkContentProps } from "@/components/ui/navbar";
 import { memo } from "react";
+import DOMPurify from 'isomorphic-dompurify';
 
 /**
  * Reusable content layout for navigation links in the navbar.
@@ -18,17 +19,30 @@ import { memo } from "react";
  * @returns {JSX.Element} The formatted link content block.
  */
 
-const NavbarLinkContent = memo(({ title, description, icon }: NavbarLinkContentProps) => (
-  <div className="flex items-start gap-3">
-    {icon && <div className="mt-0.5" aria-hidden="true">{icon}</div>}
-    <div>
-      <span className="block mb-1 text-base leading-5 font-medium">{title}</span>
-      {description && (
-        <p className="m-0 text-sm leading-5 text-gray-500">{description}</p>
+const NavbarLinkContent = memo(
+  ({ title, description, icon }: NavbarLinkContentProps) => (
+    <div className="flex items-start gap-3">
+      {icon && (
+        <div className="mt-0.5" aria-hidden="true">
+          {icon}
+        </div>
       )}
+      <div>
+        <span className="block mb-1 text-base leading-5 font-medium">
+          {title}
+        </span>
+        {description && (
+          <p
+            className="m-0 text-sm leading-5 text-gray-500"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(description || ""),
+            }}
+          />
+        )}
+      </div>
     </div>
-  </div>
-));
+  )
+);
 
 NavbarLinkContent.displayName = "NavbarLinkContent";
 export default NavbarLinkContent;

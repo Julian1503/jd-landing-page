@@ -41,7 +41,7 @@ const MobileMenuPanel = ({ items = [], onClose, triggerRef }: MobileMenuPanelPro
       aria-label="Mobile navigation menu"
       aria-labelledby="mobile-menu-heading"
       aria-describedby="mobile-menu-desc"
-      className="fixed right-0 z-50 w-[85vw] max-w-sm bg-[var(--background)] shadow-xl overflow-y-auto border-l border-[var(--border)]"
+      className="fixed right-0 z-50 w-full xs:w-[85vw] sm:w-[75vw] md:w-96 max-w-md bg-background shadow-xl overflow-y-auto border-l border-[var(--border)]"
       style={{
         top: `${headerHeight}px`,
         height: `calc(100vh - ${headerHeight}px)`,

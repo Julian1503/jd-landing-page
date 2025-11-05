@@ -12,7 +12,7 @@ import {
   getContainerClass,
   generateLinkKey,
 } from "@/components/ui/navbar";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks";
 
 /**
@@ -43,6 +43,8 @@ const NavbarMenuItem = ({
   layout = "auto",
   gridCols = 2,
 }: NavbarMenuItemProps) => {
+  const linksRef = useRef(links);
+  
   if (!links || links.length === 0) {
     return (
       <NavigationMenu.Item>
@@ -52,21 +54,32 @@ const NavbarMenuItem = ({
       </NavigationMenu.Item>
     );
   }
+
+  useEffect(() => {
+    if (JSON.stringify(links) !== JSON.stringify(linksRef.current)) {
+      linksRef.current = links;
+    }
+  }, [links]);
+
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [isOpen, setIsOpen] = useState(false);
   const finalLayout = useMemo(
     () => determineLayout(links, layout),
-    [links, layout]
+    [linksRef.current, layout]
   );
   const containerClass = useMemo(
     () => getContainerClass(finalLayout, gridCols),
     [finalLayout, gridCols]
   );
+  
 
   return (
     <NavigationMenu.Item>
       <NavigationMenu.Trigger
-        aria-haspopup="true"
-        aria-expanded={undefined}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        onPointerEnter={() => setIsOpen(true)}
+        onPointerLeave={() => setIsOpen(false)}
         className={NAV_TRIGGER_CLASS}
       >
         {name}

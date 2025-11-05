@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/navbar";
 import { usePrefersReducedMotion } from "@/hooks";
 import { NavbarNestedMenuItemProps } from "./types";
+import { useState } from "react";
+import DOMPurify from 'isomorphic-dompurify';
 
 /**
  * Recursive component that renders nested navigation menu items.
@@ -34,6 +36,7 @@ import { NavbarNestedMenuItemProps } from "./types";
  */
 const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
   const hasChildren = link.children && link.children.length > 0;
+  const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const Wrapper = depth === 0 ? NavigationMenu.Root : "div";
   if (!hasChildren) {
@@ -57,7 +60,9 @@ const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
       <NavigationMenu.Item>
         <NavigationMenu.Trigger
           aria-haspopup="menu"
-          aria-expanded={undefined}
+          aria-expanded={isOpen}
+          onPointerEnter={() => setIsOpen(true)}
+          onPointerLeave={() => setIsOpen(false)}
           className={NAV_LINK_CARD_CLASS}
         >
           <div className="flex items-start gap-3 w-full pr-8 cursor-pointer">
@@ -66,14 +71,17 @@ const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
                 {link.icon}
               </div>
             )}
-            <div className="flex-7 min-w-0 w-full">
+            <div className="flex-1 min-w-0 w-full">
               <span className="m-0 mb-1 text-base leading-5 font-medium block">
                 {link.title}
               </span>
               {link.description && (
-                <p className="m-0 text-sm leading-5 text-gray-500">
-                  {link.description}
-                </p>
+                <p
+                  className="m-0 text-sm leading-5 text-gray-500"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(link.description || ""),
+                  }}
+                />
               )}
             </div>
             <div className="flex flex-1 items-center justify-end w-5">

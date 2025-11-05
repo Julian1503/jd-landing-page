@@ -35,7 +35,7 @@ const NavbarDesktop = ({ items, className }: NavbarDesktopProps) => {
     <NavigationMenu.Root
       className={cn(
         "hidden md:flex h-full items-center justify-center rounded-md p-3",
-        "bg-[var(--background)] text-[var(--foreground)] border-[var(--border)]",
+        "bg-background text-[var(--foreground)] border-[var(--border)]",
         className
       )}
     >

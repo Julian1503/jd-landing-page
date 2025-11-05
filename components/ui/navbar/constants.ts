@@ -7,7 +7,7 @@
 const NAV_TRIGGER_CLASS =
   "box-border flex items-center justify-center gap-1.5 h-10 " +
   "px-2 xs:px-3.5 m-0 rounded-md " +
-  "bg-[var(--background)] text-[var(--foreground)] font-medium " +
+  "bg-background text-[var(--foreground)] font-medium " +
   "text-[0.925rem] xs:text-base leading-6 select-none no-underline " +
   "hover:bg-[var(--muted)] active:bg-[var(--muted)] data-[popup-open]:bg-[var(--muted)] " +
   "focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-1 " +
@@ -41,7 +41,8 @@ const NAV_CONTENT_MAIN_CLASS =
   "data-[starting-style]:data-[activation-direction=left]:translate-x-[-50%] " +
   "data-[starting-style]:data-[activation-direction=right]:translate-x-[50%] " +
   "data-[ending-style]:data-[activation-direction=left]:translate-x-[50%] " +
-  "data-[ending-style]:data-[activation-direction=right]:translate-x-[-50%] will-change[transform,opacity,translate]";
+  "data-[ending-style]:data-[activation-direction=right]:translate-x-[-50%]" +
+  "will-change-opacity will-change-transform will-change-translate";
 
 /**
  * Base class for the positioning wrapper of navigation popups.
@@ -73,7 +74,8 @@ const NAV_POPUP_CLASS =
   "duration-[var(--duration)] ease-[var(--easing)] " +
   "data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[ending-style]:duration-150 " +
   "data-[starting-style]:scale-90 data-[starting-style]:opacity-0 " +
-  "dark:shadow-none dark:-outline-offset-1 dark:outline-[var(--border)] will-change-[transform, opacity]";
+  "dark:shadow-none dark:-outline-offset-1 dark:outline-[var(--border)] will-change-opacity will-change-transform" +
+  "transform-gpu";
 
 /**
  * Arrow element styles for popup components, controlling side alignment and rotation.
@@ -83,7 +85,7 @@ const NAV_ARROW_CLASS =
   "data-[side=bottom]:top-[-8px] data-[side=left]:right-[-13px] " +
   "data-[side=left]:rotate-90 data-[side=right]:left-[-13px] " +
   "data-[side=right]:-rotate-90 data-[side=top]:bottom-[-8px] " +
-  "data-[side=top]:rotate-180 will-change[left]";
+  "data-[side=top]:rotate-180 will-change-left";
 
 /**
  * Shared icon style for navigation items (gray by default, foreground on hover).
