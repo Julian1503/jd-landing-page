@@ -7,7 +7,7 @@ import { useEffect, useRef, RefObject } from "react";
  */
 export function useFocusTrap<T extends HTMLElement = HTMLElement>(
   isActive: boolean,
-  triggerRef?: RefObject<T  | null>
+  triggerRef?: RefObject<T | null>
 ) {
   const containerRef = useRef<T>(null);
 
@@ -16,15 +16,17 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
     if (!isActive || !container) return;
 
     const focusable = container.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]'
     );
 
-    const previouslyFocused = document.activeElement as HTMLElement;
+    const previouslyFocused = document.activeElement;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-    
-    if (first) first.focus();
-    
+
+    if (first) {
+      first.focus();
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Tab" || focusable.length === 0) return;
 
@@ -38,12 +40,26 @@ export function useFocusTrap<T extends HTMLElement = HTMLElement>(
     };
 
     container.addEventListener("keydown", handleKeyDown);
+
     return () => {
       container.removeEventListener("keydown", handleKeyDown);
-      if (previouslyFocused && previouslyFocused.focus) {
-        previouslyFocused.focus();
-      } else if (triggerRef?.current?.focus) {
-        triggerRef.current.focus();
+
+      if (
+        previouslyFocused &&
+        previouslyFocused instanceof HTMLElement &&
+        typeof previouslyFocused.focus === "function" &&
+        document.body.contains(previouslyFocused)
+      ) {
+        requestAnimationFrame(() => {
+          (previouslyFocused as HTMLElement).focus();
+        });
+      } else if (
+        triggerRef?.current &&
+        typeof triggerRef.current.focus === "function"
+      ) {
+        requestAnimationFrame(() => {
+          triggerRef.current?.focus();
+        });
       }
     };
   }, [isActive, triggerRef]);

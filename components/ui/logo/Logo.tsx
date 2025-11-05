@@ -81,7 +81,7 @@ const Logo = ({
           alt={imageAlt}
           fill
           className="object-cover"
-          priority={href === "/" ? true : false}
+          priority={href === "/"} 
         />
       </div>
 

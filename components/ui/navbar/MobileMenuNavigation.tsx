@@ -97,4 +97,5 @@ const MobileMenuNavigation = memo(({
   );
 });
 
+MobileMenuNavigation.displayName = "MobileMenuNavigation"
 export default MobileMenuNavigation;

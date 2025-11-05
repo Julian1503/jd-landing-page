@@ -34,7 +34,7 @@ import DOMPurify from 'isomorphic-dompurify';
  * @param {NestedLink} props.link - The navigation link data, potentially containing child links.
  * @returns {JSX.Element} The rendered nested navigation item with optional submenu.
  */
-const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
+const NavbarNestedMenuItem = ({ link, depth = 0 }: NavbarNestedMenuItemProps) => {
   const hasChildren = link.children && link.children.length > 0;
   const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -98,7 +98,7 @@ const NavbarNestedMenuItem = ({ link, depth }: NavbarNestedMenuItemProps) => {
               <NavbarNestedMenuItem
                 key={`${child.href}-${idx}`}
                 link={child}
-                depth={(depth ?? 0) + 1}
+                depth={depth + 1}
               />
             ))}
           </div>

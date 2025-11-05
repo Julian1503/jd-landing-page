@@ -23,14 +23,14 @@ const NavbarLinkContent = memo(
   ({ title, description, icon }: NavbarLinkContentProps) => (
     <div className="flex items-start gap-3">
       {icon && (
-        <div className="mt-0.5" aria-hidden="true">
+        <div className="mt-0.5 flex-shrink-0" aria-hidden="true">
           {icon}
         </div>
       )}
-      <div>
-        <span className="block mb-1 text-base leading-5 font-medium">
+      <div className="flex-1 min-w-0">
+        <h3 className="block mb-1 text-base leading-5 font-medium">
           {title}
-        </span>
+        </h3>
         {description && (
           <p
             className="m-0 text-sm leading-5 text-gray-500"
