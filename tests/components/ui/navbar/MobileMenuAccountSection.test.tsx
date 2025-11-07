@@ -1,58 +1,59 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuAccountSection from '../../../../components/ui/navbar/MobileMenuAccountSection'
+import { fireEvent, render, screen } from "@testing-library/react";
+import MobileMenuAccountSection from "@/components/ui/navbar/MobileMenuAccountSection";
+import { usePrefersReducedMotion } from "@/hooks";
 
-// Mock Clerk hooks
-const mockSignOut = jest.fn()
-const mockOpenUserProfile = jest.fn()
+jest.mock("@/hooks", () => {
+  const actual = jest.requireActual("@/hooks");
+  return {
+    ...actual,
+    usePrefersReducedMotion: jest.fn(() => false),
+  };
+});
 
-jest.mock('@clerk/nextjs', () => ({
-  useClerk: () => ({
-    signOut: mockSignOut,
-    openUserProfile: mockOpenUserProfile,
-  }),
-  SignedIn: ({ children }: any) => <div data-testid="signed-in">{children}</div>,
-  SignedOut: ({ children }: any) => <div data-testid="signed-out">{children}</div>,
-  SignInButton: ({ children }: any) => <button>{children}</button>,
-}))
+describe("MobileMenuAccountSection", () => {
+  const clerkModule = require("@clerk/nextjs");
+  const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
-describe('MobileMenuAccountSection', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
+  afterEach(() => {
+    mockUsePrefersReducedMotion.mockClear();
+  });
 
-  it('renders account section title when signed in', () => {
-    render(<MobileMenuAccountSection onClose={jest.fn()} />)
-    expect(screen.getByText('Account')).toBeInTheDocument()
-  })
+  it("renders a sign-in call to action when signed out", () => {
+    (globalThis as any).__setClerkSignedIn(false);
 
-  it('renders manage account button when signed in', () => {
-    render(<MobileMenuAccountSection onClose={jest.fn()} />)
-    expect(screen.getByText('Manage account')).toBeInTheDocument()
-  })
+    render(<MobileMenuAccountSection onClose={jest.fn()} />);
 
-  it('renders sign out button when signed in', () => {
-    render(<MobileMenuAccountSection onClose={jest.fn()} />)
-    expect(screen.getByText('Sign out')).toBeInTheDocument()
-  })
+    expect(screen.getByText("Sign in to your account")).toBeInTheDocument();
+    expect(screen.getByText("Appearance")).toBeInTheDocument();
+  });
 
-  it('calls openUserProfile and onClose when manage account clicked', () => {
-    const mockClose = jest.fn()
-    render(<MobileMenuAccountSection onClose={mockClose} />)
-    
-    fireEvent.click(screen.getByText('Manage account'))
-    expect(mockOpenUserProfile).toHaveBeenCalledTimes(1)
-    expect(mockClose).toHaveBeenCalledTimes(1)
-  })
+  it("allows managing the account and signing out when signed in", () => {
+    (globalThis as any).__setClerkSignedIn(true);
+    const onClose = jest.fn();
 
-  it('calls signOut when sign out button clicked', () => {
-    render(<MobileMenuAccountSection onClose={jest.fn()} />)
-    
-    fireEvent.click(screen.getByText('Sign out'))
-    expect(mockSignOut).toHaveBeenCalledTimes(1)
-  })
+    render(<MobileMenuAccountSection onClose={onClose} />);
 
-  it('renders sign in button when signed out', () => {
-    render(<MobileMenuAccountSection onClose={jest.fn()} />)
-    expect(screen.getByText('Sign in to your account')).toBeInTheDocument()
-  })
-})
+    const manageButton = screen.getByRole("button", { name: "Manage account" });
+    fireEvent.click(manageButton);
+    expect(clerkModule.useClerk().openUserProfile).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    const signOutButton = screen.getByRole("button", { name: "Sign out" });
+    fireEvent.click(signOutButton);
+    expect(clerkModule.useClerk().signOut).toHaveBeenCalledTimes(1);
+  });
+
+  it("avoids hover animations when reduced motion is preferred", () => {
+    mockUsePrefersReducedMotion.mockReturnValueOnce(true);
+    (globalThis as any).__setClerkSignedIn(true);
+
+    render(<MobileMenuAccountSection onClose={jest.fn()} />);
+
+    const accountHeading = screen.getByText("Account");
+    const animatedSection = accountHeading.closest("div[data-transition]");
+    expect(animatedSection?.getAttribute("data-transition")).toContain("\"delay\":0");
+
+    const signOutButton = screen.getByRole("button", { name: "Sign out" });
+    expect(signOutButton.getAttribute("data-while-hover")).toBeNull();
+  });
+});

@@ -1,47 +1,28 @@
-import { render, screen } from '@testing-library/react'
-import NavbarLinkContent from '../../../../components/ui/navbar/NavbarLinkContent'
-import { Home } from 'lucide-react'
+import { render, screen } from "@testing-library/react";
+import NavbarLinkContent from "@/components/ui/navbar/NavbarLinkContent";
 
-describe('NavbarLinkContent', () => {
-  it('renders title correctly', () => {
-    render(<NavbarLinkContent title="Test Title" />)
-    expect(screen.getByText('Test Title')).toBeInTheDocument()
-  })
-
-  it('renders description when provided', () => {
-    render(
-      <NavbarLinkContent 
-        title="Test Title" 
-        description="Test Description" 
+describe("NavbarLinkContent", () => {
+  it("renders icon, title and sanitized description", () => {
+    const { container } = render(
+      <NavbarLinkContent
+        title="Design"
+        description="<em>Beautiful</em> <script>alert('xss')</script>"
+        icon={<span data-testid="icon">🌟</span>}
       />
-    )
-    expect(screen.getByText('Test Description')).toBeInTheDocument()
-  })
+    );
 
-  it('renders icon when provided', () => {
-    const TestIcon = () => <svg data-testid="test-icon" />
-    render(
-      <NavbarLinkContent 
-        title="Test Title" 
-        icon={<TestIcon />} 
-      />
-    )
-    expect(screen.getByTestId('test-icon')).toBeInTheDocument()
-  })
+    expect(screen.getByTestId("icon")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Design" })).toBeInTheDocument();
+    expect(container.querySelector("p")?.innerHTML).toContain("<em>Beautiful</em>");
+    expect(container.querySelector("p")?.innerHTML).not.toContain("script");
+  });
 
-  it('does not render description when not provided', () => {
-    render(<NavbarLinkContent title="Test Title" />)
-    expect(screen.queryByText(/Description/)).not.toBeInTheDocument()
-  })
+  it("omits optional sections gracefully", () => {
+    const { container } = render(<NavbarLinkContent title="Support" />);
+    expect(container.querySelector("p")).toBeNull();
+  });
 
-  it('applies correct CSS classes', () => {
-    const { container } = render(<NavbarLinkContent title="Test Title" />)
-    expect(container.firstChild).toHaveClass('flex', 'items-start', 'gap-3')
-  })
-
-  it('renders title as h3 element', () => {
-    render(<NavbarLinkContent title="Test Title" />)
-    const title = screen.getByText('Test Title')
-    expect(title.tagName).toBe('H3')
-  })
-})
+  it("exposes a stable display name", () => {
+    expect(NavbarLinkContent.displayName).toBe("NavbarLinkContent");
+  });
+});
