@@ -35,7 +35,7 @@ const MobileMenuAccountSection = ({
     <>
       <SignedIn>
         <motion.div
-          className="border-t border-[var(--border)] pt-4 mt-6"
+          className="border-t border-border pt-4 mt-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: delayTime }}
@@ -48,7 +48,7 @@ const MobileMenuAccountSection = ({
                 openUserProfile();
                 onClose();
               }}
-              className={`${NAV_BUTTON_BASE_CLASS} hover:bg-[var(--muted)]`}
+              className={`${NAV_BUTTON_BASE_CLASS} hover:bg-muted`}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -80,7 +80,7 @@ const MobileMenuAccountSection = ({
 
       <SignedOut>
         <motion.div
-          className="border-t border-[var(--border)] pt-4 mt-6"
+          className="border-t border-border pt-4 mt-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: delayTime }}
@@ -88,7 +88,7 @@ const MobileMenuAccountSection = ({
           <SignInButton mode="modal">
             <motion.button
               type="button"
-              className="flex items-center justify-center gap-3 w-full py-3 px-4 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[color-mix(in oklch, var(--primary) 90%, black 10%)] transition-colors font-medium"
+              className="flex items-center justify-center gap-3 w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground hover:bg-[color-mix(in oklch, var(--primary) 90%, black 10%)] transition-colors font-medium"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -99,13 +99,13 @@ const MobileMenuAccountSection = ({
         </motion.div>
       </SignedOut>
       <motion.div
-        className="border-t border-[var(--border)] pt-4 mt-4"
+        className="border-t border-border pt-4 mt-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: delayTime + 0.05 }}
       >
         <h3 className={MOBILE_SECTION_TITLE_CLASS}>Appearance</h3>
-        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--muted)]/50">
+        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/50">
           <div className="flex items-center gap-3">
             <Palette size={18} className={NAV_ICON_CLASS} />
             <span className="text-sm font-medium">Theme</span>

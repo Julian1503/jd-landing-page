@@ -27,7 +27,7 @@ describe('MobileMenuButton', () => {
       <MobileMenuButton isOpen={false} onToggle={jest.fn()} />
     )
     const button = container.querySelector('button')
-    expect(button).toHaveClass('hover:bg-[var(--muted)]')
+    expect(button).toHaveClass('hover:bg-muted')
   })
 
   it('does not break with multiple rapid clicks', () => {

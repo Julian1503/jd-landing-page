@@ -7,20 +7,20 @@
 const NAV_TRIGGER_CLASS =
   "box-border flex items-center justify-center gap-1.5 h-10 " +
   "px-2 xs:px-3.5 m-0 rounded-md " +
-  "bg-background text-[var(--foreground)] font-medium " +
+  "bg-background text-foreground font-medium " +
   "text-[0.925rem] xs:text-base leading-6 select-none no-underline " +
-  "hover:bg-[var(--muted)] active:bg-[var(--muted)] data-[popup-open]:bg-[var(--muted)] " +
-  "focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-1 " +
-  "focus-visible:outline-[var(--ring)] focus-visible:relative sm:w-auto sm:justify-center text-sm";
+  "hover:bg-muted active:bg-muted data-[popup-open]:bg-muted " +
+  "focus-visible:outline-2 focus-visible:-outline-offset-1 " +
+  "focus-visible:outline-ring focus-visible:relative sm:w-auto sm:justify-center text-sm";
 
 /**
  * Card-style class for nested navigation links (dropdown content items).
  */
 const NAV_LINK_CARD_CLASS =
   "w-full text-left relative block rounded-md p-2 xs:p-3 no-underline text-inherit " +
-  "hover:bg-[var(--muted)] focus-visible:relative focus-visible:outline focus-visible:outline-2 " +
-  "focus-visible:-outline-offset-1 focus-visible:outline-[var(--ring)] " +
-  "data-[popup-open]:bg-[var(--muted)]";
+  "hover:bg-muted focus-visible:relative focus-visible:outline-2 " +
+  "focus-visible:-outline-offset-1 focus-visible:outline-ring " +
+  "data-[popup-open]:bg-muted";
 
 /**
  * Shared animation and padding styles for popup content containers.
@@ -68,7 +68,7 @@ const NAV_POSITIONER_CLASS =
  */
 const NAV_POPUP_CLASS =
   "relative h-[var(--popup-height)] origin-[var(--transform-origin)] " +
-  "rounded-lg bg-[var(--popover)] text-[var(--foreground)] " +
+  "rounded-lg bg-[var(--popover)] text-foreground " +
   "shadow-lg shadow-[var(--muted)] outline outline-1 outline-[var(--border)] " +
   "transition-[opacity,transform,width,height,scale,translate] " +
   "duration-[var(--duration)] ease-[var(--easing)] " +
@@ -91,7 +91,7 @@ const NAV_ARROW_CLASS =
  * Shared icon style for navigation items (gray by default, foreground on hover).
  */
 const NAV_ICON_CLASS =
-  "text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors";
+  "text-[var(--muted-foreground)] group-hover:text-foreground transition-colors";
 
 /**
  * Base button style used in mobile and account menu items.
@@ -109,7 +109,7 @@ const MOBILE_SECTION_TITLE_CLASS =
  * Default mobile navigation item style for individual links.
  */
 const MOBILE_NAV_ITEM_CLASS =
-  "flex items-center justify-between py-3 px-4 rounded-lg hover:bg-[var(--muted)] transition-colors font-medium group";
+  "flex items-center justify-between py-3 px-4 rounded-lg hover:bg-muted transition-colors font-medium group";
 
 /**
  * Shared animation timing configuration for all navbar transitions.

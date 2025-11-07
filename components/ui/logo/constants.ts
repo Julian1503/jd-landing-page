@@ -26,7 +26,7 @@ const LOGO_RING_STYLES = {
  * Each style defines weight, size, and color using design system variables.
  */
 const LOGO_TEXT_STYLES = {
-  primary: "font-bold text-base md:text-lg leading-none text-[var(--foreground)]",
+  primary: "font-bold text-base md:text-lg leading-none text-foreground",
   secondary: "font-semibold text-sm md:text-base leading-none text-[var(--muted-foreground)]",
   accent: "font-bold text-base md:text-lg leading-none text-[var(--accent)]",
 } as const;

@@ -56,7 +56,7 @@ const Logo = ({
     >
       <div
         className={cn(
-          "relative rounded-full overflow-hidden transition-all flex-shrink-0",
+          "relative rounded-full overflow-hidden transition-all shrink-0",
           LOGO_SIZES[size],
           LOGO_RING_STYLES[ringStyle],
           imageClassName

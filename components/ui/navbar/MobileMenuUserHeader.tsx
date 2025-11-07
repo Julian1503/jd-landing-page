@@ -26,14 +26,14 @@ const MobileMenuUserHeader = () => {
     <motion.div 
       role="group"
       aria-label="User account information"
-      className="p-6 border-b border-[var(--border)] bg-gradient-to-br from-[var(--primary)]/10 to-transparent"
+      className="p-6 border-b border-border bg-linear-to-br from-primary/10 to-transparent"
       initial={{ opacity: 0, y: prefersReducedMotion ? 0 : -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.1 }}
     >
       <div className="flex items-center gap-3">
         <div className="h-14 w-14 rounded-full overflow-hidden 
-        ring-2 ring-[var(--primary)]/20 flex-shrink-0">
+        ring-2 ring-primary/20 shrink-0">
           <Image
             src={user?.imageUrl || "/images/avatar-default.svg"}
             alt={user?.fullName ? `${user.fullName}'s avatar` : "User avatar"}
@@ -44,11 +44,11 @@ const MobileMenuUserHeader = () => {
         </div>
         <div className="flex-1 flex flex-col justify-center min-w-0">
           <p className="font-semibold text-base">{user?.fullName || "User"}</p>
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-muted-foreground">
             {user?.primaryEmailAddress?.emailAddress || user?.username}
           </p>
         </div>
-        <div className="flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center justify-center shrink-0">
           <ThemeToggle />
         </div>
       </div>

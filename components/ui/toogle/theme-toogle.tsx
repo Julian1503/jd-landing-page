@@ -38,8 +38,8 @@ const ThemeToggle = ({
   if (!mounted) {
     return (
       <div className={cn("flex items-center", SIZES[size].wrapper, className)}>
-        <div className={cn(SIZES[size].icon, "animate-pulse bg-[var(--muted)] rounded")} />
-        <div className={cn(SIZES[size].switch, "animate-pulse bg-[var(--muted)] rounded-full")} />
+        <div className={cn(SIZES[size].icon, "animate-pulse bg-muted rounded")} />
+        <div className={cn(SIZES[size].switch, "animate-pulse bg-muted rounded-full")} />
       </div>
     );
   }
@@ -49,7 +49,7 @@ const ThemeToggle = ({
   return (
     <div className={cn("flex items-center", SIZES[size].wrapper, className)}>
       {/* Icon indicator */}
-      <div className="text-[var(--muted-foreground)] transition-colors">
+      <div className="text-muted-foreground transition-colors">
         {isDark ? (
           <Moon className={SIZES[size].icon} aria-hidden="true" />
         ) : (
@@ -63,16 +63,16 @@ const ThemeToggle = ({
         onCheckedChange={(checked: boolean) => setTheme(checked ? "dark" : "light")}
         aria-label="Toggle dark mode"
         className={cn(
-          "relative cursor-pointer rounded-full border border-[var(--border)]",
-          "bg-[var(--muted)] data-[checked]:bg-[var(--primary)] transition-colors",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-          "focus-visible:outline-[var(--ring)]",
+          "relative cursor-pointer rounded-full border border-border",
+          "bg-muted data-checked:bg-primary transition-colors",
+          "focus-visible:outline-2 focus-visible:outline-offset-2",
+          "focus-visible:outline-ring",
           SIZES[size].switch
         )}
       >
         <Switch.Thumb
           className={cn(
-            "absolute top-1/2 -translate-y-1/2 rounded-full bg-[var(--card)]",
+            "absolute top-1/2 -translate-y-1/2 rounded-full bg-card",
             "shadow-md transition-transform duration-200 ease-in-out",
             SIZES[size].thumb
           )}
@@ -81,7 +81,7 @@ const ThemeToggle = ({
 
       {/* Optional label */}
       {showLabel && (
-        <span className="text-sm font-medium text-[var(--foreground)]">
+        <span className="text-sm font-medium text-foreground">
           {isDark ? "Dark" : "Light"}
         </span>
       )}

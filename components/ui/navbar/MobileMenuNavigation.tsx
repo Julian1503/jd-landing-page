@@ -57,7 +57,7 @@ const MobileMenuNavigation = memo(({
           {isInSubmenu && (
             <motion.button
               onClick={onNavigateBack}
-              className="flex items-center gap-2 py-3 px-4 mb-4 rounded-lg hover:bg-[var(--muted)] transition-colors font-medium w-full text-left"
+              className="flex items-center gap-2 py-3 px-4 mb-4 rounded-lg hover:bg-muted transition-colors font-medium w-full text-left"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: prefersReducedMotion ? 0 : 0.1 }}
@@ -106,7 +106,7 @@ const MobileMenuNavigation = memo(({
                         <div className="flex-1">
                           <span className="font-medium text-sm">{item.title}</span>
                           {item.description && (
-                            <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               {item.description}
                             </p>
                           )}
@@ -130,7 +130,7 @@ const MobileMenuNavigation = memo(({
                         <div className="flex-1">
                           <span className="font-medium text-sm">{item.title}</span>
                           {item.description && (
-                            <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               {item.description}
                             </p>
                           )}
@@ -148,7 +148,7 @@ const MobileMenuNavigation = memo(({
                       <div className="flex-1">
                         <span className="font-medium text-sm">{item.title}</span>
                         {item.description && (
-                          <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             {item.description}
                           </p>
                         )}

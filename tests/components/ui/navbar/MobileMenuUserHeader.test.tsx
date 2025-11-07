@@ -34,6 +34,6 @@ describe('MobileMenuUserHeader', () => {
   it('applies gradient background styles', () => {
     const { container } = render(<MobileMenuUserHeader />)
     const wrapper = container.firstChild
-    expect(wrapper).toHaveClass('bg-gradient-to-br')
+    expect(wrapper).toHaveClass('bg-linear-to-br')
   })
 })

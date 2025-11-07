@@ -36,7 +36,7 @@ const NavbarDesktop = ({ items, className }: NavbarDesktopProps) => {
     <NavigationMenu.Root
       className={cn(
         "hidden md:flex h-full items-center justify-center rounded-md p-3",
-        "bg-background text-[var(--foreground)] border-[var(--border)]",
+        "bg-background text-foreground border-border",
         className
       )}
     >
@@ -46,7 +46,7 @@ const NavbarDesktop = ({ items, className }: NavbarDesktopProps) => {
             {item.showSeparatorAfter && (
               <Separator
                 orientation="vertical"
-                className="h-[80%] w-px mx-1 bg-[var(--border)]"
+                className="h-[80%] w-px mx-1 bg-border"
               />
             )}
             <NavbarMenuItem
@@ -60,14 +60,14 @@ const NavbarDesktop = ({ items, className }: NavbarDesktopProps) => {
         ))}
 
         <div className="ml-auto h-full flex items-center gap-3">
-          <Separator orientation="vertical" className="h-6 w-px bg-[var(--border)]" />
+          <Separator orientation="vertical" className="h-6 w-px bg-border" />
           <ThemeToggle size="sm" />
 
-          <Separator orientation="vertical" className="h-6 w-px bg-[var(--border)]" />
+          <Separator orientation="vertical" className="h-6 w-px bg-border" />
 
           <SignedOut>
             <SignInButton mode="modal">
-              <button className="flex items-center justify-center h-10 px-4 text-sm font-medium text-[var(--primary-foreground)] bg-[var(--primary)] hover:bg-[color-mix(in oklch, var(--primary) 90%, black 10%)] rounded-md transition-colors cursor-pointer">
+              <button className="flex items-center justify-center h-10 px-4 text-sm font-medium text-primary-foreground bg-primary hover:bg-[color-mix(in oklch, var(--primary) 90%, black 10%)] rounded-md transition-colors cursor-pointer">
                 Login
               </button>
             </SignInButton>

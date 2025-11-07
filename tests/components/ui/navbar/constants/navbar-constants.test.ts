@@ -11,7 +11,7 @@ describe('Navbar Constants', () => {
       expect(NAV_TRIGGER_CLASS).toContain('flex')
       expect(NAV_TRIGGER_CLASS).toContain('items-center')
       expect(NAV_TRIGGER_CLASS).toContain('rounded-md')
-      expect(NAV_TRIGGER_CLASS).toContain('hover:bg-[var(--muted)]')
+      expect(NAV_TRIGGER_CLASS).toContain('hover:bg-muted')
     })
 
     it('includes focus visible styles', () => {
@@ -19,7 +19,7 @@ describe('Navbar Constants', () => {
     })
 
     it('includes data-state styles', () => {
-      expect(NAV_TRIGGER_CLASS).toContain('data-[popup-open]:bg-[var(--muted)]')
+      expect(NAV_TRIGGER_CLASS).toContain('data-[popup-open]:bg-muted')
     })
   })
 
@@ -27,7 +27,7 @@ describe('Navbar Constants', () => {
     it('contains card styles', () => {
       expect(NAV_LINK_CARD_CLASS).toContain('rounded-md')
       expect(NAV_LINK_CARD_CLASS).toContain('no-underline')
-      expect(NAV_LINK_CARD_CLASS).toContain('hover:bg-[var(--muted)]')
+      expect(NAV_LINK_CARD_CLASS).toContain('hover:bg-muted')
     })
 
     it('includes accessibility styles', () => {

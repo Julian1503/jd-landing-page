@@ -55,7 +55,7 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
         ref={triggerRef}
         className={cn(
           "flex items-center justify-end rounded-md p-2 ",
-          "bg-background text-[var(--foreground)] border-[var(--border)]",
+          "bg-background text-foreground border-border",
           className
         )}
         initial={{ opacity: 0, y: -20 }}

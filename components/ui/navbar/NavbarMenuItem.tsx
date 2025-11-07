@@ -86,7 +86,7 @@ const NavbarMenuItem = ({
         className={NAV_TRIGGER_CLASS}
       >
         {name}
-        <NavigationMenu.Icon className="transition-transform duration-200 ease-in-out data-[popup-open]:rotate-180">
+        <NavigationMenu.Icon className="transition-transform duration-200 ease-in-out data-popup-open:rotate-180">
           <ChevronDownIcon aria-hidden="true" />
         </NavigationMenu.Icon>
       </NavigationMenu.Trigger>
