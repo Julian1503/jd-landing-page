@@ -14,25 +14,46 @@ const ThemeToggle = ({
 }: ThemeToggleProps) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
+  const [hasUserPreference, setHasUserPreference] = useState(false);
 
   // Detect system preference on mount
   useEffect(() => {
+    const stored = localStorage.getItem("theme");
+
+    if (stored === "dark" || stored === "light") {
+      setTheme(stored);
+      setHasUserPreference(true);
+    } else {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      setTheme(mq.matches ? "dark" : "light");
+    }
+
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || hasUserPreference) return;
+
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const apply = (isDark: boolean) => setTheme(isDark ? "dark" : "light");
-    apply(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => apply(e.matches);
+    const onChange = (event: MediaQueryListEvent) => {
+      setTheme(event.matches ? "dark" : "light");
+    };
+
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
-  }, []);
+  }, [mounted, hasUserPreference]);
 
   // Apply theme to document
   useEffect(() => {
     if (!mounted) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     // Store preference in localStorage
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+    if (hasUserPreference) {
+      localStorage.setItem("theme", theme);
+    } else {
+      localStorage.removeItem("theme");
+    }
+  }, [theme, mounted, hasUserPreference]);
 
   // Prevent hydration mismatch
   if (!mounted) {
@@ -60,7 +81,10 @@ const ThemeToggle = ({
       {/* Switch */}
       <Switch.Root
         checked={isDark}
-        onCheckedChange={(checked: boolean) => setTheme(checked ? "dark" : "light")}
+        onCheckedChange={(checked: boolean) => {
+          setHasUserPreference(true);
+          setTheme(checked ? "dark" : "light");
+        }}
         aria-label="Toggle dark mode"
         className={cn(
           "relative cursor-pointer rounded-full border border-border",
