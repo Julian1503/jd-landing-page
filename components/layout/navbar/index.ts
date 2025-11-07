@@ -1,12 +1,8 @@
 // ========== Constants ==========
-export { data } from "@/components/layout/navbar/constants";
+export * from "@/components/layout/navbar/constants";
 
 // ========== Types ==========
-export type {
-  NavbarDesktopProps,
-  NavbarMobileProps,
-  NavbarProps,
-} from "@/components/layout/navbar/types";
+export type * from "@/components/layout/navbar/types";
 
 // ========== Components ==========
 export { default as NavbarDesktop } from "@/components/layout/navbar/NavbarDesktop";
