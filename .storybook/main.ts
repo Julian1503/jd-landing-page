@@ -1,33 +1,41 @@
-import path from "path";
 import type { StorybookConfig } from "@storybook/nextjs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config: StorybookConfig = {
-  stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: [
+    "../stories/**/*.mdx",
+    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
+  ],
   addons: [
-    "@chromatic-com/storybook",
     "@storybook/addon-docs",
-    "@storybook/addon-onboarding",
     "@storybook/addon-a11y",
     "@storybook/addon-vitest",
   ],
   framework: {
     name: "@storybook/nextjs",
-    options: {},
+    options: {
+      nextConfigPath: "../next.config.js",
+    },
   },
-  staticDirs: ["../public"],
-  webpackFinal: async (config) => {
-    if (!config.resolve) {
-      config.resolve = {};
+  staticDirs: [
+    { from: "../public", to: "/" },
+  ],
+  webpackFinal: async (sbConfig) => {
+    if (sbConfig.resolve) {
+      sbConfig.resolve.alias = {
+        ...(sbConfig.resolve.alias || {}),
+        "@": path.resolve(__dirname, "../src"),
+      };
+      sbConfig.resolve.extensionAlias = {
+        ".js": [".ts", ".tsx", ".js", ".jsx"],
+        ".mjs": [".mts", ".mjs"],
+      };
     }
-
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      "@clerk/nextjs": path.resolve(__dirname, "../stories/mocks/clerkMock.tsx"),
-    };
-
-    config.resolve.extensions = Array.from(new Set([...(config.resolve.extensions || []), ".ts", ".tsx"]));
-
-    return config;
+    return sbConfig;
   },
 };
 

@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { data, Navbar, NavbarDesktop, NavbarMobile } from "@/components/layout/navbar";
+import { data } from "@/components/layout/navbar/constants";
+import Navbar from "@/components/layout/navbar/Navbar";
+import NavbarDesktop from "@/components/layout/navbar/NavbarDesktop";
+import NavbarMobile from "@/components/layout/navbar/NavbarMobile";
 
 const meta = {
   title: "Layout/Navbar",
