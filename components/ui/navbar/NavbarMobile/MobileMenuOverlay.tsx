@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MobileMenuOverlayProps } from "@/components/ui/navbar";
 import { useHeaderHeight, useEscapeKey, useScrollLock, usePrefersReducedMotion } from "@/hooks";
+import { MobileMenuOverlayProps } from "@/components/ui/navbar/NavbarMobile/types";
 
 /**
  * Semi-transparent animated overlay displayed behind the mobile navigation menu.

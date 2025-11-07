@@ -7,7 +7,7 @@ import {
   MobileMenuPanelProps,
   MobileMenuUserHeader,
   MobileMenuAccountSection,
-} from "@/components/ui/navbar";
+} from "@/components/ui/navbar/NavbarMobile";
 import { useEscapeKey, useFocusTrap, useHeaderHeight, useNavbarNavigation } from "@/hooks";
 
 /**

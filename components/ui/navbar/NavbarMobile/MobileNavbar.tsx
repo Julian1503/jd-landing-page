@@ -3,10 +3,10 @@
 import { cn } from "@/lib/utils";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MobileMenuButton from "@/components/ui/navbar/NavbarMobile/MobileMenuButton";
 import { usePrefersReducedMotion } from "@/hooks";
 import { useNavbarMobile } from "@/hooks/useNavbarMobile";
 import { NavbarMobileProps } from "@/components/ui/navbar/types";
+import MobileMenuButton from "./MobileMenuButton";
 
 const MobileMenuOverlay = lazy(
   () => import("@/components/ui/navbar/NavbarMobile/MobileMenuOverlay")
