@@ -3,10 +3,10 @@ import { SignedIn, SignedOut, SignInButton, useClerk } from "@clerk/nextjs";
 import { User, LogOut, Settings, ChevronRight, Palette } from "lucide-react";
 import {
   MOBILE_SECTION_TITLE_CLASS,
-  NAV_ICON_CLASS,
-  NAV_BUTTON_BASE_CLASS,
+  MOBILE_ICON_CLASS,
+  MOBILE_BUTTON_BASE_CLASS,
   MobileMenuAccountSectionProps,
-} from "@/components/ui/navbar";
+} from "@/components/ui/navbar/NavbarMobile";
 import { usePrefersReducedMotion } from "@/hooks";
 import { ThemeToggle } from "@/components/ui/toogle";
 /**
@@ -48,26 +48,26 @@ const MobileMenuAccountSection = ({
                 openUserProfile();
                 onClose();
               }}
-              className={`${NAV_BUTTON_BASE_CLASS} hover:bg-muted`}
+              className={`${MOBILE_BUTTON_BASE_CLASS} hover:bg-muted`}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
             >
               <Settings
                 size={18}
                 aria-hidden="true"
-                className={NAV_ICON_CLASS}
+                className={MOBILE_ICON_CLASS}
               />
               <span className="flex-1 text-left">Manage account</span>
               <ChevronRight
                 size={16}
                 aria-hidden="true"
-                className={NAV_ICON_CLASS}
+                className={MOBILE_ICON_CLASS}
               />
             </motion.button>
             <motion.button
               type="button"
               onClick={() => signOut()}
-              className={`${NAV_BUTTON_BASE_CLASS} hover:bg-red-500/10 text-red-600 hover:text-red-700`}
+              className={`${MOBILE_BUTTON_BASE_CLASS} hover:bg-red-500/10 text-red-600 hover:text-red-700`}
               whileHover={prefersReducedMotion ? undefined : { x: 4 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -107,7 +107,7 @@ const MobileMenuAccountSection = ({
         <h3 className={MOBILE_SECTION_TITLE_CLASS}>Appearance</h3>
         <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/50">
           <div className="flex items-center gap-3">
-            <Palette size={18} className={NAV_ICON_CLASS} />
+            <Palette size={18} className={MOBILE_ICON_CLASS} />
             <span className="text-sm font-medium">Theme</span>
           </div>
           <ThemeToggle size="md" showLabel />

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { usePrefersReducedMotion } from "@/hooks";
-import { ThemeToggle } from "../toogle";
+import { ThemeToggle } from "../../toogle";
 
 /**
  * Header section of the mobile navigation menu displaying the current user's info.

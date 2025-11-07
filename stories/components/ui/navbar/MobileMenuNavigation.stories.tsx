@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
-import MobileMenuNavigation from "@/components/ui/navbar/MobileMenuNavigation";
+import MobileMenuNavigation from "@/components/ui/navbar/NavbarMobile/MobileMenuNavigation";
 import { data } from "@/components/layout/navbar/constants";
-import { NavigationState } from "@/components/ui/navbar/types";
+import { MobileNavigationState } from "@/components/ui/navbar/types";
 
 const items = data.map((item) => ({
   ...item,
@@ -10,13 +10,13 @@ const items = data.map((item) => ({
 }));
 
 // Estado de navegación por defecto (menú principal)
-const defaultNavigationState: NavigationState = {
+const defaultNavigationState: MobileNavigationState = {
   currentItem: null,
   history: [],
 };
 
 // Estado de navegación en submenú
-const submenuNavigationState: NavigationState = {
+const submenuNavigationState: MobileNavigationState = {
   currentItem: {
     title: items[0].name,
     href: items[0].href,

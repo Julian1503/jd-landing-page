@@ -20,7 +20,7 @@ import { NavbarProps } from "@/components/layout/navbar/types";
  * @param {string} [props.className] - Optional custom CSS classes for the navbar wrapper.
  * @returns {JSX.Element} The responsive navigation bar component.
  */
-const Navbar = ({ className }: NavbarProps) => {
+const NavbarLayout = ({ className }: NavbarProps) => {
   return (
     <>
       <NavbarDesktop items={data} className={className} />
@@ -29,4 +29,4 @@ const Navbar = ({ className }: NavbarProps) => {
   );
 };
 
-export default Navbar;
+export default NavbarLayout;

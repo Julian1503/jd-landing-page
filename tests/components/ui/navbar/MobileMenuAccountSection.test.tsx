@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuAccountSection from '../../../../components/ui/navbar/MobileMenuAccountSection'
+import MobileMenuAccountSection from '../../../../components/ui/navbar/NavbarMobile/MobileMenuAccountSection'
 
 // Mock Clerk hooks
 const mockSignOut = jest.fn()

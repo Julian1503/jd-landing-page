@@ -1,4 +1,4 @@
-import { ReactNode, RefObject } from "react";
+import { ReactNode } from "react";
 
 /**
  * Basic structure for a single navigation link.
@@ -15,37 +15,31 @@ type BaseLink = {
 };
 
 /**
+ * Props for the desktop version of the navbar.
+ */
+type NavbarDesktopProps = {
+  /** List of navigation items to display. */
+  items: Readonly<NavbarMenuItemProps[]>;
+  /** Optional CSS class for custom styling. */
+  className?: string;
+};
+
+/**
+ * Props for the mobile version of the navbar.
+ */
+type NavbarMobileProps = {
+  /** List of navigation items to display. */
+  items: Readonly<NavbarMenuItemProps[]>;
+  /** Optional CSS class for custom styling. */
+  className?: string;
+};
+
+/**
  * Recursive structure for links that can contain child links.
  */
 type NestedLink = BaseLink & {
   /** Optional array of sublinks (for multi-level navigation). */
   children?: NestedLink[];
-};
-
-/**
- * Navigation item for mobile menu (unified structure)
- */
-type MobileNavigationItem = {
-  /** Display label */
-  title: string;
-  /** Optional link destination */
-  href?: string;
-  /** Optional description */
-  description?: string;
-  /** Optional icon */
-  icon?: ReactNode;
-  /** Optional children for drill-down */
-  children?: MobileNavigationItem[];
-};
-
-/**
- * Navigation state for mobile menu drill-down
- */
-type NavigationState = {
-  /** Current active item being displayed */
-  currentItem: MobileNavigationItem | null;
-  /** History stack for breadcrumb navigation */
-  history: MobileNavigationItem[];
 };
 
 /**
@@ -84,74 +78,14 @@ type NavbarMenuItemProps = {
  */
 type NavbarLinkContentProps = Pick<BaseLink, "title" | "description" | "icon">;
 
-/**
- * Props for the account management section in the mobile menu.
- */
-type MobileMenuAccountSectionProps = {
-  /** Callback triggered when closing the mobile menu. */
-  onClose: () => void;
-};
-
-/**
- * Props for the hamburger toggle button in mobile view.
- */
-type MobileMenuButtonProps = {
-  /** Indicates whether the mobile menu is currently open. */
-  isOpen: boolean;
-  /** Toggles the mobile menu open or closed. */
-  onToggle: () => void;
-  /** Reference from parent */
-  triggerRef?: RefObject<HTMLDivElement | null>;
-};
-
-/**
- * Props for the navigation list section in the mobile menu.
- */
-type MobileMenuNavigationProps = {
-  /** Array of navigation items displayed in the mobile menu. */
-  items: Readonly<NavbarMenuItemProps[]>;
-  /** Callback fired when a navigation item is clicked. */
-  onItemClick: () => void;
-  /** Current navigation state for drill-down */
-  navigationState: NavigationState;
-  /** Function to navigate into a submenu */
-  onNavigateToSubmenu: (item: MobileNavigationItem) => void;
-  /** Function to navigate back */
-  onNavigateBack: () => void;
-};
-
-/**
- * Props for the semi-transparent overlay behind the mobile menu.
- */
-type MobileMenuOverlayProps = {
-  /** Function to close the menu when overlay is clicked. */
-  onClose: () => void;
-};
-
-/**
- * Props for the main mobile menu panel (sliding drawer).
- */
-type MobileMenuPanelProps = {
-  /** Navigation items displayed inside the mobile menu. */
-  items: Readonly<NavbarMenuItemProps[]>;
-  /** Reference from parent */
-  triggerRef?: RefObject<HTMLDivElement | null>;
-  /** Callback triggered to close the menu panel. */
-  onClose: () => void;
-};
 
 export type {
   BaseLink,
   NestedLink,
   NavbarMenuItemProps,
   NavbarLinkContentProps,
-  MobileMenuPanelProps,
-  LayoutType,
-  MobileMenuAccountSectionProps,
-  MobileMenuButtonProps,
-  MobileMenuNavigationProps,
-  MobileMenuOverlayProps,
+  NavbarDesktopProps,
+  NavbarMobileProps,
   NavbarNestedMenuItemProps,
-  NavigationState,
-  MobileNavigationItem,
+  LayoutType,
 };

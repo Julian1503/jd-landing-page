@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuButton from '../../../../components/ui/navbar/MobileMenuButton'
+import MobileMenuButton from '../../../../components/ui/navbar/NavbarMobile/MobileMenuButton'
 
 describe('MobileMenuButton', () => {
   it('renders menu icon when closed', () => {

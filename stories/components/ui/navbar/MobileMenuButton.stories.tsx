@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useRef, useState } from "react";
-import MobileMenuButton from "@/components/ui/navbar/MobileMenuButton";
+import MobileMenuButton from "@/components/ui/navbar/NavbarMobile/MobileMenuButton";
 import { StoryAnnotations } from "storybook/internal/types";
 
 const meta = {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import MobileMenuPanel from '../../../../components/ui/navbar/MobileMenuPanel'
+import MobileMenuPanel from '../../../../components/ui/navbar/NavbarMobile/MobileMenuPanel'
 
 jest.mock('@/hooks/useHeaderHeight', () => ({
   useHeaderHeight: () => 80,

@@ -1,9 +1,9 @@
 "use client";
 import { useState, useCallback } from "react";
-import { MobileNavigationItem, NavigationState } from "@/components/ui/navbar/types";
+import { MobileNavigationItem, MobileNavigationState } from "@/components/ui/navbar/types";
 
 export function useNavbarNavigation() {
-  const [navigationState, setNavigationState] = useState<NavigationState>({
+  const [navigationState, setNavigationState] = useState<MobileNavigationState>({
     currentItem: null,
     history: [],
   });

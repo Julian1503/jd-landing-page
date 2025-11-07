@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuNavigation from '../../../../components/ui/navbar/MobileMenuNavigation'
+import MobileMenuNavigation from '../../../../components/ui/navbar/NavbarMobile/MobileMenuNavigation'
 
 const mockItems = [
   {

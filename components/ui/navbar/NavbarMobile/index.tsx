@@ -1,18 +1,18 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MobileMenuButton from "@/components/ui/navbar/MobileMenuButton";
-import { NavbarMobileProps } from "./types";
+import MobileMenuButton from "@/components/ui/navbar/NavbarMobile/MobileMenuButton";
 import { usePrefersReducedMotion } from "@/hooks";
 import { useNavbarMobile } from "@/hooks/useNavbarMobile";
+import { NavbarMobileProps } from "@/components/ui/navbar/types";
 
 const MobileMenuOverlay = lazy(
-  () => import("@/components/ui/navbar/MobileMenuOverlay")
+  () => import("@/components/ui/navbar/NavbarMobile/MobileMenuOverlay")
 );
 const MobileMenuPanel = lazy(
-  () => import("@/components/ui/navbar/MobileMenuPanel")
+  () => import("@/components/ui/navbar/NavbarMobile/MobileMenuPanel")
 );
 
 /**
@@ -41,8 +41,8 @@ const NavbarMobile = ({ items, className }: NavbarMobileProps) => {
 
   useEffect(() => {
     if (shouldPreload) {
-      import("@/components/ui/navbar/MobileMenuOverlay");
-      import("@/components/ui/navbar/MobileMenuPanel");
+      import("@/components/ui/navbar/NavbarMobile/MobileMenuOverlay");
+      import("@/components/ui/navbar/NavbarMobile/MobileMenuPanel");
     }
   }, [shouldPreload]);
 

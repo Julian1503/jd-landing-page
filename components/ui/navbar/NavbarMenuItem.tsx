@@ -95,13 +95,13 @@ const NavbarMenuItem = ({
         style={prefersReducedMotion ? { transition: "none" } : undefined}
         className={NAV_CONTENT_MAIN_CLASS}
       >
-        <ul className={containerClass}>
+        <div className={containerClass}>
           {links.map((item, idx) => (
-            <li key={`${generateLinkKey(item.href ?? "", idx)}`}>
+            <div key={`${generateLinkKey(item.href ?? "", idx)}`}>
               <NavbarNestedMenuItem link={item} />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </NavigationMenu.Content>
     </NavigationMenu.Item>
   );

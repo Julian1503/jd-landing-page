@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import MobileMenuUserHeader from '../../../../components/ui/navbar/MobileMenuUserHeader'
+import MobileMenuUserHeader from '../../../../components/ui/navbar/NavbarMobile/MobileMenuUserHeader'
 
 jest.mock('@clerk/nextjs', () => ({
   useUser: () => ({

@@ -1,4 +1,4 @@
-import Navbar from "./navbar/Navbar";
+import NavbarLayout from "./NavbarLayout";
 import { Logo } from "@/components/ui/logo";
 
 const Header = () => {
@@ -17,7 +17,7 @@ const Header = () => {
             textStyle="primary"
             subtextStyle="muted"
           />
-          <Navbar />
+          <NavbarLayout />
         </div>
       </div>
     </header>

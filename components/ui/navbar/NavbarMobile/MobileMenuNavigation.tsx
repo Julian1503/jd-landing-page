@@ -4,7 +4,7 @@ import { memo } from "react";
 import {
   MOBILE_SECTION_TITLE_CLASS,
   MOBILE_NAV_ITEM_CLASS,
-  NAV_ICON_CLASS,
+  MOBILE_ICON_CLASS,
 } from "@/components/ui/navbar/constants";
 import { MobileMenuNavigationProps, MobileNavigationItem } from "@/components/ui/navbar/types";
 import { getStaggerDelay } from "@/components/ui/navbar/utils";
@@ -67,7 +67,7 @@ const MobileMenuNavigation = memo(({
               <ChevronLeft
                 size={20}
                 aria-hidden="true"
-                className={NAV_ICON_CLASS}
+                className={MOBILE_ICON_CLASS}
               />
               <span>Back</span>
             </motion.button>
@@ -114,7 +114,7 @@ const MobileMenuNavigation = memo(({
                         <ChevronRight
                           size={16}
                           aria-hidden="true"
-                          className={NAV_ICON_CLASS}
+                          className={MOBILE_ICON_CLASS}
                         />
                       </div>
                     </motion.a>
@@ -138,7 +138,7 @@ const MobileMenuNavigation = memo(({
                         <ChevronRight
                           size={16}
                           aria-hidden="true"
-                          className={NAV_ICON_CLASS}
+                          className={MOBILE_ICON_CLASS}
                         />
                       </div>
                     </motion.button>

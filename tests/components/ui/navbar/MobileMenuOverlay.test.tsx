@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuOverlay from '../../../../components/ui/navbar/MobileMenuOverlay'
+import MobileMenuOverlay from '../../../../components/ui/navbar/NavbarMobile/MobileMenuOverlay'
 
 jest.mock('@/hooks/useHeaderHeight', () => ({
   useHeaderHeight: () => 80,
