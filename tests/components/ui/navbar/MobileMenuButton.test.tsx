@@ -1,44 +1,50 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuButton from '../../../../components/ui/navbar/NavbarMobile/MobileMenuButton'
+import { fireEvent, render, screen } from "@testing-library/react";
+import MobileMenuButton from "@/components/ui/navbar/NavbarMobile/MobileMenuButton";
+import { usePrefersReducedMotion } from "@/hooks";
 
-describe('MobileMenuButton', () => {
-  it('renders menu icon when closed', () => {
-    render(<MobileMenuButton isOpen={false} onToggle={jest.fn()} />)
-    expect(screen.getByLabelText('Toggle menu')).toBeInTheDocument()
-  })
+jest.mock("@/hooks", () => {
+  const actual = jest.requireActual("@/hooks");
+  return {
+    ...actual,
+    usePrefersReducedMotion: jest.fn(() => false),
+  };
+});
 
-  it('calls onToggle when clicked', () => {
-    const mockToggle = jest.fn()
-    render(<MobileMenuButton isOpen={false} onToggle={mockToggle} />)
-    
-    fireEvent.click(screen.getByLabelText('Toggle menu'))
-    expect(mockToggle).toHaveBeenCalledTimes(1)
-  })
+describe("MobileMenuButton", () => {
+  const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
-  it('has correct aria attributes', () => {
-    render(<MobileMenuButton isOpen={false} onToggle={jest.fn()} />)
-    
-    const button = screen.getByLabelText('Toggle menu')
-    expect(button).toHaveAttribute('aria-label', 'Toggle menu')
-  })
+  afterEach(() => {
+    mockUsePrefersReducedMotion.mockClear();
+  });
 
-  it('applies hover styles', () => {
-    const { container } = render(
-      <MobileMenuButton isOpen={false} onToggle={jest.fn()} />
-    )
-    const button = container.querySelector('button')
-    expect(button).toHaveClass('hover:bg-muted')
-  })
+  it("toggles aria attributes and icons based on state", () => {
+    const onToggle = jest.fn();
+    const { rerender } = render(
+      <MobileMenuButton isOpen={false} onToggle={onToggle} />
+    );
 
-  it('does not break with multiple rapid clicks', () => {
-    const mockToggle = jest.fn()
-    render(<MobileMenuButton isOpen={false} onToggle={mockToggle} />)
-    
-    const button = screen.getByLabelText('Toggle menu')
-    fireEvent.click(button)
-    fireEvent.click(button)
-    fireEvent.click(button)
-    
-    expect(mockToggle).toHaveBeenCalledTimes(3)
-  })
-})
+    const button = screen.getByRole("button", { name: "Open navigation menu" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByLabelText("menu-icon")).toBeInTheDocument();
+
+    fireEvent.click(button);
+    expect(onToggle).toHaveBeenCalledTimes(1);
+
+    rerender(<MobileMenuButton isOpen triggerRef={{ current: null }} onToggle={onToggle} />);
+
+    const closeButton = screen.getByRole("button", { name: "Close navigation menu" });
+    expect(closeButton).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByLabelText("close-icon")).toBeInTheDocument();
+  });
+
+  it("removes animations when reduced motion is preferred", () => {
+    const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
+    mockUsePrefersReducedMotion.mockReturnValueOnce(true);
+
+    render(<MobileMenuButton isOpen={false} onToggle={jest.fn()} />);
+
+    const button = screen.getByRole("button", { name: "Open navigation menu" });
+    const iconWrapper = button.querySelector("[data-transition]");
+    expect(iconWrapper?.getAttribute("data-transition")).toContain("\"duration\":0");
+  });
+});

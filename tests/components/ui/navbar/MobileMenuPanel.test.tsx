@@ -1,44 +1,46 @@
-import { render, screen } from '@testing-library/react'
-import MobileMenuPanel from '../../../../components/ui/navbar/NavbarMobile/MobileMenuPanel'
+import { fireEvent, render, screen } from "@testing-library/react";
+import MobileMenuPanel from "@/components/ui/navbar/NavbarMobile/MobileMenuPanel";
 
-jest.mock('@/hooks/useHeaderHeight', () => ({
-  useHeaderHeight: () => 80,
-}))
+describe("MobileMenuPanel", () => {
+  const items = [
+    {
+      name: "Products",
+      links: [
+        { title: "Product A", href: "/products/a", description: "First" },
+        { title: "Product B", href: "/products/b", description: "Second" },
+      ],
+    },
+    { name: "Contact", href: "/contact", description: "Reach us" },
+  ] as const;
 
-const mockItems = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-]
+  it("renders navigation content and resets state on close", () => {
+    (globalThis as any).__setClerkSignedIn(true);
+    const onClose = jest.fn();
 
-describe('MobileMenuPanel', () => {
-  it('renders with correct positioning', () => {
-    const { container } = render(
-      <MobileMenuPanel items={mockItems} onClose={jest.fn()} />
-    )
-    const panel = container.firstChild as HTMLElement
-    expect(panel.style.top).toBe('80px')
-  })
+    render(<MobileMenuPanel items={items} onClose={onClose} />);
 
-  it('renders navigation items', () => {
-    render(<MobileMenuPanel items={mockItems} onClose={jest.fn()} />)
-    expect(screen.getByText('Home')).toBeInTheDocument()
-    expect(screen.getByText('About')).toBeInTheDocument()
-  })
+    const panel = screen.getByRole("dialog", { name: "Mobile navigation menu" });
+    expect(panel).toHaveAttribute("aria-modal", "true");
+    expect(panel).toHaveStyle({ top: "65px" });
+    expect(panel).toHaveAttribute(
+      "data-transition",
+      JSON.stringify({ type: "spring", damping: 25, stiffness: 200 })
+    );
 
-  it('has correct ARIA attributes', () => {
-    const { container } = render(
-      <MobileMenuPanel items={mockItems} onClose={jest.fn()} />
-    )
-    const panel = container.firstChild as HTMLElement
-    expect(panel).toHaveAttribute('role', 'dialog')
-    expect(panel).toHaveAttribute('aria-modal', 'true')
-    expect(panel).toHaveAttribute('aria-label', 'Mobile navigation menu')
-  })
+    // Navigate into a submenu
+    fireEvent.click(screen.getByText("Products"));
+    expect(screen.getByRole("heading", { name: "Products" })).toBeInTheDocument();
 
-  it('renders with correct z-index', () => {
-    const { container } = render(
-      <MobileMenuPanel items={mockItems} onClose={jest.fn()} />
-    )
-    expect(container.firstChild).toHaveClass('z-50')
-  })
-})
+    // Trigger account action to close the panel
+    const manageAccount = screen.getByRole("button", { name: "Manage account" });
+    fireEvent.click(manageAccount);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("heading", { name: "Navigation" })).toBeInTheDocument();
+
+    // Direct link triggers the supplied onClose callback too
+    const contactLink = screen.getByRole("link", { name: /Contact/ });
+    fireEvent.click(contactLink);
+    expect(onClose).toHaveBeenCalledTimes(2);
+  });
+});

@@ -1,5 +1,5 @@
 import type { Config } from "jest";
-import nextJest from "next/jest";
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({ dir: "./" });
 
@@ -7,7 +7,7 @@ const config: Config = {
   coverageProvider: "v8",
   testEnvironment: "jsdom",
 
-  setupFilesAfterEnv: ["<rootDir>/tests/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/tests/jest.setup.tsx"],
 
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
@@ -20,11 +20,17 @@ const config: Config = {
     "app/**/*.{js,jsx,ts,tsx}",
     "hooks/**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
+    "!**/types.ts",
     "!**/node_modules/**",
     "!**/.next/**",
   ],
 
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/.next/",
+    "<rootDir>/tests/jest.setup.tsx",
+    "<rootDir>/tests/__mocks__/",
+  ],
 
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": [
