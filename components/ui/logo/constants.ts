@@ -1,43 +1,44 @@
 /**
  * Predefined responsive size classes for the logo image container.
  *
- * Used to control the logo’s width and height at different breakpoints.
+ * Used to control the logo's width and height at different breakpoints.
  */
 const LOGO_SIZES = {
-  sm: "w-8 h-8 md:w-10 md:h-10",
-  md: "w-10 h-10 md:w-12 md:h-12",
-  lg: "w-12 h-12 md:w-16 md:h-16",
+  sm: "w-8 h-8 md:w-9 md:h-9",
+  md: "w-10 h-10 md:w-11 md:h-11",
+  lg: "w-12 h-12 md:w-14 md:h-14",
   xl: "w-16 h-16 md:w-20 md:h-20",
 } as const;
 
 /**
  * Ring/border visual styles applied to the logo image.
- * Controls color and hover states.
+ * Controls color and hover states using design system variables.
  */
 const LOGO_RING_STYLES = {
-  default: "ring-2 ring-gray-200 hover:ring-gray-300",
-  primary: "ring-2 ring-blue-200 hover:ring-blue-300",
-  secondary: "ring-2 ring-purple-200 hover:ring-purple-300",
+  default: "ring-2 ring-[var(--border)] hover:ring-[var(--ring)]",
+  primary: "ring-2 ring-[var(--primary)]/20 hover:ring-[var(--primary)]/40",
+  accent: "ring-2 ring-[var(--accent)]/30 hover:ring-[var(--accent)]/50",
   none: "ring-0",
 } as const;
 
 /**
  * Typography presets for the main logo text.
- * Each style defines weight, size, and color intensity.
+ * Each style defines weight, size, and color using design system variables.
  */
 const LOGO_TEXT_STYLES = {
-  primary: "font-bold text-lg leading-tight text-gray-900",
-  secondary: "font-semibold text-base leading-tight text-gray-800",
-  light: "font-medium text-sm leading-tight text-gray-700",
+  primary: "font-bold text-base md:text-lg leading-none text-[var(--foreground)]",
+  secondary: "font-semibold text-sm md:text-base leading-none text-[var(--muted-foreground)]",
+  accent: "font-bold text-base md:text-lg leading-none text-[var(--accent)]",
 } as const;
 
 /**
  * Typography presets for the logo subtext (tagline or version).
+ * Uses design system variables for consistent theming.
  */
 const LOGO_SUBTEXT_STYLES = {
-  default: "text-xs text-gray-600 leading-tight",
-  muted: "text-xs text-gray-500 leading-tight",
-  primary: "text-xs text-blue-600 leading-tight",
+  default: "text-xs md:text-sm leading-none text-[var(--muted-foreground)]",
+  muted: "text-xs md:text-sm leading-none text-[var(--muted-foreground)]/70",
+  accent: "text-xs md:text-sm leading-none text-[var(--accent)]",
 } as const;
 
 /**
@@ -59,4 +60,4 @@ export {
   LOGO_SIZES,
   LOGO_SUBTEXT_STYLES,
   LOGO_TEXT_STYLES,
-}
+};

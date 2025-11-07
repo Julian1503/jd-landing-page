@@ -23,23 +23,8 @@ import {
  * - Optional hover scaling animation when wrapped in a link.
  *
  * @param {LogoProps} props - Component properties.
- * @param {string} [props.href] - Optional URL that wraps the logo in a Next.js `Link`.
- * @param {string} props.imageSrc - Path or URL to the logo image.
- * @param {string} props.imageAlt - Accessible description for the image.
- * @param {LogoSize} [props.size] - Predefined size key controlling logo dimensions.
- * @param {LogoRingStyle} [props.ringStyle] - Visual ring style around the logo image.
- * @param {boolean} [props.showText] - Whether to display text and/or subtext next to the image.
- * @param {string} [props.text] - Primary label (e.g., brand or product name).
- * @param {LogoTextStyle} [props.textStyle] - Preset typography style for the main text.
- * @param {string} [props.subtext] - Secondary label (e.g., tagline).
- * @param {LogoSubtextStyle} [props.subtextStyle] - Preset typography style for the subtext.
- * @param {string} [props.className] - Optional custom classes for the wrapper element.
- * @param {string} [props.imageClassName] - Optional custom classes for the image container.
- * @param {string} [props.textClassName] - Optional custom classes for the text container.
- *
  * @returns {JSX.Element} The rendered logo element, optionally wrapped in a link.
  */
-
 const Logo = ({
   href = LOGO_DEFAULTS.href,
   imageSrc,
@@ -63,10 +48,11 @@ const Logo = ({
   if (!imageAlt) {
     console.warn("Logo: imageAlt is recommended for accessibility");
   }
+
   const content = (
     <figure
       role="group"
-      className={cn("flex items-center p-3 gap-3", className)}
+      className={cn("flex items-center gap-3", className)}
     >
       <div
         className={cn(
@@ -81,15 +67,21 @@ const Logo = ({
           alt={imageAlt}
           fill
           className="object-cover"
-          priority={href === "/"} 
+          priority={href === "/"}
         />
       </div>
 
       {showText && (text || subtext) && (
-        <figcaption className={cn("flex flex-col", textClassName)}>
-          {text && <span className={LOGO_TEXT_STYLES[textStyle]}>{text}</span>}
+        <figcaption className={cn("flex flex-col gap-0.5", textClassName)}>
+          {text && (
+            <span className={cn(LOGO_TEXT_STYLES[textStyle], "block")}>
+              {text}
+            </span>
+          )}
           {subtext && (
-            <span className={LOGO_SUBTEXT_STYLES[subtextStyle]}>{subtext}</span>
+            <span className={cn(LOGO_SUBTEXT_STYLES[subtextStyle], "block")}>
+              {subtext}
+            </span>
           )}
         </figcaption>
       )}
@@ -100,7 +92,7 @@ const Logo = ({
     return (
       <Link
         href={href}
-        className="transition-transform hover:scale-105 active:scale-95 inline-block"
+        className="inline-flex transition-transform hover:scale-105 active:scale-95"
         aria-label={showText ? undefined : `Navigate to ${text || imageAlt}`}
       >
         {content}
