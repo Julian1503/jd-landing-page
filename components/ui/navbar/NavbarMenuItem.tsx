@@ -1,18 +1,21 @@
 "use client";
 
-import { ChevronDownIcon } from "@/components/icons";
-import { NavigationMenu } from "@base-ui-components/react/navigation-menu";
 import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { NavigationMenu } from "@base-ui-components/react/navigation-menu";
+import { ChevronDownIcon } from "@/components/icons";
+
+import { NavbarMenuItemProps } from "./types";
+import NavbarNestedMenuItem from "./NavbarNestedMenuItem";
 import {
   NAV_TRIGGER_CLASS,
   NAV_CONTENT_MAIN_CLASS,
-  NavbarMenuItemProps,
-  NavbarNestedMenuItem,
+} from "./constants";
+import {
   determineLayout,
   getContainerClass,
   generateLinkKey,
-} from "@/components/ui/navbar";
-import { useEffect, useMemo, useRef, useState } from "react";
+} from "./utils";
 import { usePrefersReducedMotion } from "@/hooks";
 
 /**
@@ -94,7 +97,7 @@ const NavbarMenuItem = ({
       >
         <ul className={containerClass}>
           {links.map((item, idx) => (
-            <li key={`${generateLinkKey(item.href, idx)}`}>
+            <li key={`${generateLinkKey(item.href ?? "", idx)}`}>
               <NavbarNestedMenuItem link={item} />
             </li>
           ))}

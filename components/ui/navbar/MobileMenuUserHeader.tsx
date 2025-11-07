@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { usePrefersReducedMotion } from "@/hooks";
+import { ThemeToggle } from "../toogle";
 
 /**
  * Header section of the mobile navigation menu displaying the current user's info.
@@ -31,7 +32,8 @@ const MobileMenuUserHeader = () => {
       transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.1 }}
     >
       <div className="flex items-center gap-3">
-        <div className="h-14 w-14 rounded-full overflow-hidden ring-2 ring-[var(--primary)]/20">
+        <div className="h-14 w-14 rounded-full overflow-hidden 
+        ring-2 ring-[var(--primary)]/20 flex-shrink-0">
           <Image
             src={user?.imageUrl || "/images/avatar-default.svg"}
             alt={user?.fullName ? `${user.fullName}'s avatar` : "User avatar"}
@@ -40,11 +42,14 @@ const MobileMenuUserHeader = () => {
             className="object-cover"
           />
         </div>
-        <div>
+        <div className="flex-1 flex flex-col justify-center min-w-0">
           <p className="font-semibold text-base">{user?.fullName || "User"}</p>
           <p className="text-sm text-[var(--muted-foreground)]">
             {user?.primaryEmailAddress?.emailAddress || user?.username}
           </p>
+        </div>
+        <div className="flex items-center justify-center flex-shrink-0">
+          <ThemeToggle />
         </div>
       </div>
     </motion.div>

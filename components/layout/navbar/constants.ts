@@ -28,6 +28,13 @@ const data: Readonly<NavbarMenuItemProps[]> = Object.freeze([
         title: "Link 2",
         href: "https://localhost:3000#2",
         description: "Description for link 2",
+        children: [
+          {
+        title: "Link",
+        href: "https://localhost:3000#1",
+        description: "Description for link 1",
+      },
+        ]
       },
     ],
   },

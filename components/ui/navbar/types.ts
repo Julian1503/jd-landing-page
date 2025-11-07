@@ -9,7 +9,7 @@ type BaseLink = {
   /** Optional secondary text shown under the title. */
   description?: string;
   /** URL or path the link points to. */
-  href: string;
+  href?: string;
   /** Optional icon element rendered beside the text. */
   icon?: ReactNode;
 };
@@ -21,19 +21,43 @@ type NestedLink = BaseLink & {
   /** Optional array of sublinks (for multi-level navigation). */
   children?: NestedLink[];
 };
-/***
- * 
+
+/**
+ * Navigation item for mobile menu (unified structure)
  */
-type NavbarNestedMenuItemProps =  {
+type MobileNavigationItem = {
+  /** Display label */
+  title: string;
+  /** Optional link destination */
+  href?: string;
+  /** Optional description */
+  description?: string;
+  /** Optional icon */
+  icon?: ReactNode;
+  /** Optional children for drill-down */
+  children?: MobileNavigationItem[];
+};
+
+/**
+ * Navigation state for mobile menu drill-down
+ */
+type NavigationState = {
+  /** Current active item being displayed */
+  currentItem: MobileNavigationItem | null;
+  /** History stack for breadcrumb navigation */
+  history: MobileNavigationItem[];
+};
+
+/**
+ * Props for nested menu item
+ */
+type NavbarNestedMenuItemProps = {
   link: NestedLink;
   depth?: number;
-}
+};
 
 /**
  * Available layout options for menu sections.
- * - `"grid"`: display links in a grid.
- * - `"list"`: display links vertically.
- * - `"auto"`: automatically decide based on link count.
  */
 type LayoutType = "grid" | "list" | "auto";
 
@@ -85,9 +109,15 @@ type MobileMenuButtonProps = {
  */
 type MobileMenuNavigationProps = {
   /** Array of navigation items displayed in the mobile menu. */
-  items: NavbarMenuItemProps[];
+  items: Readonly<NavbarMenuItemProps[]>;
   /** Callback fired when a navigation item is clicked. */
   onItemClick: () => void;
+  /** Current navigation state for drill-down */
+  navigationState: NavigationState;
+  /** Function to navigate into a submenu */
+  onNavigateToSubmenu: (item: MobileNavigationItem) => void;
+  /** Function to navigate back */
+  onNavigateBack: () => void;
 };
 
 /**
@@ -103,7 +133,7 @@ type MobileMenuOverlayProps = {
  */
 type MobileMenuPanelProps = {
   /** Navigation items displayed inside the mobile menu. */
-  items: NavbarMenuItemProps[];
+  items: Readonly<NavbarMenuItemProps[]>;
   /** Reference from parent */
   triggerRef?: RefObject<HTMLDivElement | null>;
   /** Callback triggered to close the menu panel. */
@@ -121,5 +151,7 @@ export type {
   MobileMenuButtonProps,
   MobileMenuNavigationProps,
   MobileMenuOverlayProps,
-  NavbarNestedMenuItemProps
+  NavbarNestedMenuItemProps,
+  NavigationState,
+  MobileNavigationItem,
 };

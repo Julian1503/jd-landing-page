@@ -9,8 +9,9 @@ import { Separator } from "@base-ui-components/react";
 import { NavigationMenu } from "@base-ui-components/react/navigation-menu";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 import React from "react";
-import { NavbarDesktopProps } from "./types";
+import { NavbarDesktopProps } from "@/components/layout/navbar/types";
 import { NAV_ANIMATION_STYLE, NAV_ARROW_CLASS, NAV_POPUP_CLASS, NAV_POSITIONER_CLASS } from "@/components/ui/navbar/constants";
+import { ThemeToggle } from "@/components/ui/toogle";
 
 /**
  * Desktop version of the main navigation bar.
@@ -59,6 +60,9 @@ const NavbarDesktop = ({ items, className }: NavbarDesktopProps) => {
         ))}
 
         <div className="ml-auto h-full flex items-center gap-3">
+          <Separator orientation="vertical" className="h-6 w-px bg-[var(--border)]" />
+          <ThemeToggle size="sm" />
+
           <Separator orientation="vertical" className="h-6 w-px bg-[var(--border)]" />
 
           <SignedOut>

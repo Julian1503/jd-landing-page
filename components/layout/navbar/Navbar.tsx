@@ -3,11 +3,12 @@
  * Exports a responsive Navbar that switches between desktop and mobile layouts.
  */
 import {
-  data,
   NavbarDesktop,
-  NavbarProps,
   NavbarMobile,
 } from "@/components/layout/navbar";
+
+import { data } from "@/components/layout/navbar/constants";
+import { NavbarProps } from "@/components/layout/navbar/types";
 
 /**
  * Root `Navbar` component that renders both desktop and mobile navigation.

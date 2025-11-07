@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { SignedIn, SignedOut, SignInButton, useClerk } from "@clerk/nextjs";
-import { User, LogOut, Settings, ChevronRight } from "lucide-react";
+import { User, LogOut, Settings, ChevronRight, Palette } from "lucide-react";
 import {
   MOBILE_SECTION_TITLE_CLASS,
   NAV_ICON_CLASS,
@@ -8,10 +8,10 @@ import {
   MobileMenuAccountSectionProps,
 } from "@/components/ui/navbar";
 import { usePrefersReducedMotion } from "@/hooks";
-
+import { ThemeToggle } from "@/components/ui/toogle";
 /**
  * Mobile account section for the navigation menu.
- * 
+ *
  * Displays user-related actions depending on authentication state:
  * - When signed in: shows "Manage account" and "Sign out" buttons.
  * - When signed out: shows a "Sign in" button that opens the Clerk modal.
@@ -71,7 +71,7 @@ const MobileMenuAccountSection = ({
               whileHover={prefersReducedMotion ? undefined : { x: 4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <LogOut size={18}  aria-hidden="true" />
+              <LogOut size={18} aria-hidden="true" />
               <span className="flex-1 text-left">Sign out</span>
             </motion.button>
           </div>
@@ -98,6 +98,21 @@ const MobileMenuAccountSection = ({
           </SignInButton>
         </motion.div>
       </SignedOut>
+      <motion.div
+        className="border-t border-[var(--border)] pt-4 mt-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: delayTime + 0.05 }}
+      >
+        <h3 className={MOBILE_SECTION_TITLE_CLASS}>Appearance</h3>
+        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--muted)]/50">
+          <div className="flex items-center gap-3">
+            <Palette size={18} className={NAV_ICON_CLASS} />
+            <span className="text-sm font-medium">Theme</span>
+          </div>
+          <ThemeToggle size="md" showLabel />
+        </div>
+      </motion.div>
     </>
   );
 };

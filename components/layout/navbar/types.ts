@@ -13,7 +13,7 @@ type NavbarProps = {
  */
 type NavbarDesktopProps = {
   /** List of navigation items to display. */
-  items: NavbarMenuItemProps[];
+  items: Readonly<NavbarMenuItemProps[]>;
   /** Optional CSS class for custom styling. */
   className?: string;
 };
@@ -23,7 +23,7 @@ type NavbarDesktopProps = {
  */
 type NavbarMobileProps = {
   /** List of navigation items to display. */
-  items: NavbarMenuItemProps[];
+  items: Readonly<NavbarMenuItemProps[]>;
   /** Optional CSS class for custom styling. */
   className?: string;
 };

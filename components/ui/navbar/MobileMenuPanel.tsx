@@ -8,7 +8,7 @@ import {
   MobileMenuUserHeader,
   MobileMenuAccountSection,
 } from "@/components/ui/navbar";
-import { useEscapeKey, useFocusTrap, useHeaderHeight } from "@/hooks";
+import { useEscapeKey, useFocusTrap, useHeaderHeight, useNavbarNavigation } from "@/hooks";
 
 /**
  * Sliding panel component for the mobile navigation menu.
@@ -28,13 +28,21 @@ import { useEscapeKey, useFocusTrap, useHeaderHeight } from "@/hooks";
  */
 const MobileMenuPanel = ({ items = [], onClose, triggerRef }: MobileMenuPanelProps) => {
   const headerHeight = useHeaderHeight();
+  const { navigationState, navigateToSubmenu, navigateBack, resetNavigation } = useNavbarNavigation();
   
   const panelRef = useFocusTrap(true, triggerRef);
-  useEscapeKey(onClose);
+  
+  // Reset navigation when panel closes
+  const handleClose = () => {
+    resetNavigation();
+    onClose();
+  };
+  
+  useEscapeKey(handleClose);
 
   return (
     <motion.div
-      ref={triggerRef}
+      ref={panelRef}
       id="mobile-menu-panel"
       role="dialog"
       aria-modal="true"
@@ -63,8 +71,14 @@ const MobileMenuPanel = ({ items = [], onClose, triggerRef }: MobileMenuPanelPro
       </SignedIn>
 
       <nav className="p-6">
-        <MobileMenuNavigation items={items} onItemClick={onClose} />
-        <MobileMenuAccountSection onClose={onClose} />
+        <MobileMenuNavigation
+          items={items}
+          onItemClick={handleClose}
+          navigationState={navigationState}
+          onNavigateToSubmenu={navigateToSubmenu}
+          onNavigateBack={navigateBack}
+        />
+        <MobileMenuAccountSection onClose={handleClose} />
       </nav>
     </motion.div>
   );
