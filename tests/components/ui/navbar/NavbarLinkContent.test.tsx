@@ -13,7 +13,9 @@ describe("NavbarLinkContent", () => {
 
     expect(screen.getByTestId("icon")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Design" })).toBeInTheDocument();
-    expect(container.querySelector("p")?.innerHTML).toContain("<em>Beautiful</em>");
+    expect(container.querySelector("p")?.innerHTML).toContain(
+      "<em>Beautiful</em>"
+    );
     expect(container.querySelector("p")?.innerHTML).not.toContain("script");
   });
 
@@ -24,5 +26,12 @@ describe("NavbarLinkContent", () => {
 
   it("exposes a stable display name", () => {
     expect(NavbarLinkContent.displayName).toBe("NavbarLinkContent");
+  });
+
+  it("sanitizes safely even when description is an empty string", () => {
+    const { container } = render(
+      <NavbarLinkContent title="Empty Description" description="" />
+    );
+    expect(container.querySelector("p")).toBeNull();
   });
 });

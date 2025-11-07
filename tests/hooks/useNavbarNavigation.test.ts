@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { useNavbarNavigation } from "@/hooks/useNavbarNavigation";
-import type { MobileNavigationItem } from "@/components/ui/navbar/types";
+import type { MobileNavigationItem } from "@/components/ui/navbar/NavbarMobile";
 
 describe("useNavbarNavigation", () => {
   const productItem: MobileNavigationItem = {

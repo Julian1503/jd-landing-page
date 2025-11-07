@@ -2,7 +2,9 @@ import { render, screen } from "@testing-library/react";
 import Logo from "@/components/ui/logo/Logo";
 
 describe("Logo", () => {
-  const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+  const consoleError = jest
+    .spyOn(console, "error")
+    .mockImplementation(() => {});
   const consoleWarn = jest.spyOn(console, "warn").mockImplementation(() => {});
 
   afterEach(() => {
@@ -33,29 +35,41 @@ describe("Logo", () => {
   });
 
   it("warns when no alt text is supplied", () => {
-    render(
-      <Logo
-        href="/"
-        imageSrc="/logo.png"
-        imageAlt=""
-      />
-    );
+    render(<Logo href="/" imageSrc="/logo.png" imageAlt="" />);
 
     expect(consoleWarn).toHaveBeenCalled();
   });
 
   it("returns null when the image source is invalid", () => {
     const { container } = render(
-      <Logo imageSrc={"" as unknown as string} imageAlt="alt" showText text="Brand" />
+      <Logo
+        imageSrc={"" as unknown as string}
+        imageAlt="alt"
+        showText
+        text="Brand"
+      />
     );
 
     expect(container.firstChild).toBeNull();
     expect(consoleError).toHaveBeenCalled();
   });
 
+  it("does not render figcaption when showText is true but text/subtext are missing", () => {
+    const { container } = render(
+      <Logo imageSrc="/logo.png" imageAlt="Logo" showText />
+    );
+    expect(container.querySelector("figcaption")).toBeNull();
+  });
+  
   it("renders static content when no href is provided", () => {
     const { container } = render(
-      <Logo href="" imageSrc="/logo.png" imageAlt="Static logo" text="Brand" showText />
+      <Logo
+        href=""
+        imageSrc="/logo.png"
+        imageAlt="Static logo"
+        text="Brand"
+        showText
+      />
     );
 
     const figure = container.querySelector("figure");

@@ -32,11 +32,8 @@ const MobileMenuNavigation = memo(({
   onNavigateBack,
 }: MobileMenuNavigationProps) => {
   const prefersReducedMotion = usePrefersReducedMotion();
-
-  // Convert items to unified format
   const convertedItems = items.map(convertToMobileItem);
 
-  // Determine which items to display
   const displayItems: MobileNavigationItem[] = navigationState.currentItem
     ? navigationState.currentItem.children || []
     : convertedItems;
@@ -53,7 +50,6 @@ const MobileMenuNavigation = memo(({
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
         >
-          {/* Back button when in submenu */}
           {isInSubmenu && (
             <motion.button
               onClick={onNavigateBack}
@@ -73,7 +69,6 @@ const MobileMenuNavigation = memo(({
             </motion.button>
           )}
 
-          {/* Section title */}
           <h3 id="mobile-nav-heading" className={MOBILE_SECTION_TITLE_CLASS}>
             {navigationState.currentItem?.title || "Navigation"}
           </h3>
@@ -94,7 +89,6 @@ const MobileMenuNavigation = memo(({
                   }}
                 >
                   {!hasChildren && hasHref ? (
-                    // Direct link without submenu
                     <motion.a
                       href={item.href}
                       onClick={onItemClick}
@@ -119,7 +113,6 @@ const MobileMenuNavigation = memo(({
                       </div>
                     </motion.a>
                   ) : hasChildren ? (
-                    // Item with submenu - navigate to it
                     <motion.button
                       onClick={() => onNavigateToSubmenu(item)}
                       className={`${MOBILE_NAV_ITEM_CLASS} w-full text-left`}
@@ -143,7 +136,6 @@ const MobileMenuNavigation = memo(({
                       </div>
                     </motion.button>
                   ) : (
-                    // Item without href and without children (shouldn't happen, but handle it)
                     <div className={`${MOBILE_NAV_ITEM_CLASS} opacity-50 cursor-not-allowed`}>
                       <div className="flex-1">
                         <span className="font-medium text-sm">{item.title}</span>

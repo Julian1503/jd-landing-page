@@ -21,28 +21,30 @@ import DOMPurify from 'isomorphic-dompurify';
  */
 
 const NavbarLinkContent = memo(
-  ({ title, description, icon }: NavbarLinkContentProps) => (
-    <div className="flex items-start gap-3">
-      {icon && (
-        <div className="mt-0.5 shrink-0" aria-hidden="true">
-          {icon}
-        </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <h3 className="block mb-1 text-base leading-5 font-medium">
-          {title}
-        </h3>
-        {description && (
-          <p
-            className="m-0 text-sm leading-5 text-gray-500"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(description || ""),
-            }}
-          />
+  ({ title, description, icon }: NavbarLinkContentProps) => {
+    const safeHTML = DOMPurify.sanitize(description || "");
+
+    return (
+      <div className="flex items-start gap-3">
+        {icon && (
+          <div className="mt-0.5 shrink-0" aria-hidden="true">
+            {icon}
+          </div>
         )}
+        <div className="flex-1 min-w-0">
+          <h3 className="block mb-1 text-base leading-5 font-medium">
+            {title}
+          </h3>
+          {description && (
+            <p
+              className="m-0 text-sm leading-5 text-gray-500"
+              dangerouslySetInnerHTML={{ __html: safeHTML }}
+            />
+          )}
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 );
 
 NavbarLinkContent.displayName = "NavbarLinkContent";

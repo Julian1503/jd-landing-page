@@ -16,41 +16,43 @@ describe("ThemeToggle", () => {
   });
 
   it("toggles between light and dark themes and persists the preference", async () => {
-    const listeners: Array<(event: MediaQueryListEvent) => void> = [];
-    window.matchMedia = jest.fn().mockImplementation(() => ({
-      matches: false,
-      media: "(prefers-color-scheme: dark)",
-      addEventListener: (_event: string, handler: (event: MediaQueryListEvent) => void) => {
-        listeners.push(handler);
-      },
-      removeEventListener: jest.fn(),
-      addListener: jest.fn(),
-      removeListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    }));
+  const listeners: Array<(event: MediaQueryListEvent) => void> = [];
+  window.matchMedia = jest.fn().mockImplementation(() => ({
+    matches: false,
+    media: "(prefers-color-scheme: dark)",
+    addEventListener: (_event: string, handler: (event: MediaQueryListEvent) => void) => {
+      listeners.push(handler);
+    },
+    removeEventListener: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }));
 
-    render(<ThemeToggle showLabel />);
+  render(<ThemeToggle showLabel />);
 
-    await waitFor(() => {
-      expect(screen.getByText("Light")).toBeInTheDocument();
-    });
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
-
-    const group = screen.getByRole("group", { name: "Theme" });
-    const toggleButton = within(group).getByRole("button");
-    fireEvent.click(toggleButton);
-
-    expect(localStorage.getItem("theme")).toBe("dark");
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-    expect(screen.getByText("Dark")).toBeInTheDocument();
-
-    fireEvent.click(toggleButton);
-    expect(localStorage.getItem("theme")).toBe("light");
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
-
-    act(() => listeners.forEach((handler) => handler({ matches: true } as MediaQueryListEvent)));
-    expect(screen.getByText("Dark")).toBeInTheDocument();
+  await waitFor(() => {
+    expect(screen.getByText("Light")).toBeInTheDocument();
   });
+
+  const group = screen.getByRole("group", { name: "Theme" });
+  const toggleButton = within(group).getByRole("button");
+  fireEvent.click(toggleButton);
+
+  expect(localStorage.getItem("theme")).toBe("dark");
+  expect(document.documentElement.classList.contains("dark")).toBe(true);
+  expect(screen.getByText("Dark")).toBeInTheDocument();
+
+  fireEvent.click(toggleButton);
+  expect(localStorage.getItem("theme")).toBe("light");
+  expect(document.documentElement.classList.contains("dark")).toBe(false);
+
+  act(() => listeners.forEach((handler) => handler({ matches: true } as MediaQueryListEvent)));
+  await waitFor(() => expect(screen.getByText("Dark")).toBeInTheDocument());
+  act(() => listeners.forEach((handler) => handler({ matches: false } as MediaQueryListEvent)));
+  await waitFor(() => expect(screen.getByText("Light")).toBeInTheDocument());
+});
+
 
   it("honours a stored user preference without querying system settings", async () => {
     localStorage.setItem("theme", "dark");
@@ -101,4 +103,5 @@ describe("ThemeToggle", () => {
     const markup = renderToString(<ThemeToggle />);
     expect(markup).toContain("animate-pulse");
   });
+  
 });

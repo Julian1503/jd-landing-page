@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import React from "react";
+import React, { RefObject } from "react";
 import { useFocusTrap } from "@/hooks";
 
 describe("useFocusTrap", () => {
@@ -21,12 +21,12 @@ describe("useFocusTrap", () => {
 
   const TestTrap = ({ active }: { active: boolean }) => {
     const triggerRef = React.useRef<HTMLButtonElement>(null);
-    const trapRef = useFocusTrap<HTMLDivElement>(active, triggerRef);
+    const trapRef = useFocusTrap<HTMLButtonElement>(active, triggerRef);
 
     return (
       <div>
         <button ref={triggerRef}>Trigger</button>
-        <div ref={trapRef} tabIndex={-1}>
+        <div ref={trapRef as RefObject<HTMLDivElement | null>} tabIndex={-1}>
           <button>First</button>
           <button>Last</button>
         </div>

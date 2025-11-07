@@ -18,7 +18,6 @@ describe("useHeaderHeight", () => {
       }
     }
 
-    // @ts-expect-error override for test environment
     global.ResizeObserver = MockResizeObserver;
   });
 
@@ -59,7 +58,7 @@ describe("useHeaderHeight", () => {
     });
 
     act(() => {
-      resizeObserverInstance?.callback([], resizeObserverInstance as any);
+      (resizeObserverInstance as any)?.callback([], resizeObserverInstance as any);
     });
 
     await waitFor(() => expect(result.current).toBe(120));

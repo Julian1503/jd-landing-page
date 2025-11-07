@@ -15,7 +15,7 @@ describe("MobileMenuNavigation", () => {
   const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
   const baseItems: MobileMenuNavigationProps["items"] = [
-    { name: "Home", href: "/home", },
+    { name: "Home", href: "/home" },
     {
       name: "Products",
       links: [
@@ -23,7 +23,7 @@ describe("MobileMenuNavigation", () => {
         { title: "Product B", href: "/products/b", description: "Second" },
       ],
     },
-    { name: "Placeholder", href: "",},
+    { name: "Placeholder", href: "" },
   ];
 
   afterEach(() => {
@@ -45,20 +45,25 @@ describe("MobileMenuNavigation", () => {
       />
     );
 
-    expect(screen.getByRole("heading", { name: "Navigation" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Navigation" })
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Home"));
     expect(onItemClick).toHaveBeenCalledTimes(1);
 
     fireEvent.click(screen.getByText("Products"));
     expect(onNavigateToSubmenu).toHaveBeenCalledTimes(1);
-    expect(onNavigateToSubmenu.mock.calls[0][0]).toMatchObject({ title: "Products" });
+    expect(onNavigateToSubmenu.mock.calls[0][0]).toMatchObject({
+      title: "Products",
+    });
 
     const submenuTrigger = screen.getByRole("button", { name: "Products" });
-    expect(submenuTrigger.getAttribute("data-while-hover")).toContain("\"x\":4");
+    expect(submenuTrigger.getAttribute("data-while-hover")).toContain('"x":4');
 
     // Items without href or children are rendered as disabled entries
-    const fallbackWrapper = screen.getByText("Placeholder").parentElement?.parentElement;
+    const fallbackWrapper =
+      screen.getByText("Placeholder").parentElement?.parentElement;
     expect(fallbackWrapper?.className).toContain("cursor-not-allowed");
   });
 
@@ -93,7 +98,34 @@ describe("MobileMenuNavigation", () => {
     expect(nestedLink).toBeInTheDocument();
 
     const animatedRow = nestedLink.closest("div[data-transition]");
-    expect(animatedRow?.getAttribute("data-transition")).toBe(JSON.stringify({ delay: 0, duration: 0 }));
+    expect(animatedRow?.getAttribute("data-transition")).toBe(
+      JSON.stringify({ delay: 0, duration: 0 })
+    );
     expect(backButton.getAttribute("data-while-hover")).toBeNull();
+  });
+
+  it("renders menu with no children", () => {
+    mockUsePrefersReducedMotion.mockReturnValueOnce(true);
+    const onNavigateBack = jest.fn();
+
+    render(
+      <MobileMenuNavigation
+        items={baseItems}
+        onItemClick={jest.fn()}
+        navigationState={{
+          currentItem: {
+            title: "Products",
+          },
+          history: [{ title: "Root", children: baseItems as any }],
+        }}
+        onNavigateToSubmenu={jest.fn()}
+        onNavigateBack={onNavigateBack}
+      />
+    );
+
+    expect(screen.getByText("Products")).toBeInTheDocument();
+    const submenu = screen.queryByRole("list");
+    expect(submenu).toBeNull();
+    expect(onNavigateBack).not.toHaveBeenCalled();
   });
 });

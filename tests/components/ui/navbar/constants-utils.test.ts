@@ -43,6 +43,7 @@ describe("Navbar constants and utilities", () => {
     expect(getContainerClass("list", 2)).toContain("flex");
     expect(getContainerClass("grid", 3)).toContain("sm:grid-cols");
     expect(determineLayout([{ title: "A" }], "auto")).toBe("grid");
+    expect(determineLayout(undefined, undefined)).toBe("grid");
     expect(determineLayout(new Array(6).fill({ title: "A" }), "auto")).toBe(
       "list"
     );

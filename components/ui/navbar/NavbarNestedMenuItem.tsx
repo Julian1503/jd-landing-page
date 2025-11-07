@@ -39,6 +39,7 @@ const NavbarNestedMenuItem = ({ link, depth = 0 }: NavbarNestedMenuItemProps) =>
   const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const Wrapper = depth === 0 ? NavigationMenu.Root : "div";
+  const safeHTML = DOMPurify.sanitize(link.description || "");
   if (!hasChildren) {
     return (
       <Link href={link.href ?? "#"} className={NAV_LINK_CARD_CLASS}>
@@ -79,7 +80,7 @@ const NavbarNestedMenuItem = ({ link, depth = 0 }: NavbarNestedMenuItemProps) =>
                 <p
                   className="m-0 text-sm leading-5 text-gray-500"
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(link.description || ""),
+                    __html: safeHTML,
                   }}
                 />
               )}
