@@ -1,37 +1,49 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import MobileMenuOverlay from '../../../../components/ui/navbar/MobileMenuOverlay'
+import { fireEvent, render, screen } from "@testing-library/react";
+import MobileMenuOverlay from "@/components/ui/navbar/MobileMenuOverlay";
+import { usePrefersReducedMotion } from "@/hooks";
 
-jest.mock('@/hooks/useHeaderHeight', () => ({
-  useHeaderHeight: () => 80,
-}))
+jest.mock("@/hooks", () => {
+  const actual = jest.requireActual("@/hooks");
+  return {
+    ...actual,
+    usePrefersReducedMotion: jest.fn(() => false),
+  };
+});
 
-describe('MobileMenuOverlay', () => {
-  it('renders with correct positioning', () => {
-    const { container } = render(<MobileMenuOverlay onClose={jest.fn()} />)
-    const overlay = container.firstChild as HTMLElement
-    expect(overlay.style.top).toBe('80px')
-  })
+describe("MobileMenuOverlay", () => {
+  const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
-  it('calls onClose when clicked', () => {
-    const mockClose = jest.fn()
-    const { container } = render(<MobileMenuOverlay onClose={mockClose} />)
-    
-    fireEvent.click(container.firstChild as HTMLElement)
-    expect(mockClose).toHaveBeenCalledTimes(1)
-  })
+  afterEach(() => {
+    document.body.style.overflow = "";
+    mockUsePrefersReducedMotion.mockClear();
+  });
 
-  it('has correct aria-hidden attribute', () => {
-    const { container } = render(<MobileMenuOverlay onClose={jest.fn()} />)
-    expect(container.firstChild).toHaveAttribute('aria-hidden', 'true')
-  })
+  it("positions itself below the header and closes on interactions", () => {
+    const onClose = jest.fn();
+    const { unmount } = render(<MobileMenuOverlay onClose={onClose} />);
 
-  it('applies backdrop blur styles', () => {
-    const { container } = render(<MobileMenuOverlay onClose={jest.fn()} />)
-    expect(container.firstChild).toHaveClass('backdrop-blur-sm')
-  })
+    const overlay = screen.getByRole("presentation", { hidden: true });
+    expect(overlay).toHaveStyle({ top: "65px" });
+    expect(overlay).toHaveStyle({ height: "calc(100vh - 65px)" });
 
-  it('has correct z-index', () => {
-    const { container } = render(<MobileMenuOverlay onClose={jest.fn()} />)
-    expect(container.firstChild).toHaveClass('z-40')
-  })
-})
+    // Scroll lock is applied via the hook
+    expect(document.body.style.overflow).toBe("hidden");
+
+    fireEvent.click(overlay);
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(onClose).toHaveBeenCalledTimes(2);
+
+    unmount();
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("disables animation duration when prefers-reduced-motion is enabled", () => {
+    mockUsePrefersReducedMotion.mockReturnValueOnce(true);
+
+    render(<MobileMenuOverlay onClose={jest.fn()} />);
+    const overlay = screen.getByRole("presentation", { hidden: true });
+    expect(overlay.getAttribute("data-transition")).toBe(JSON.stringify({ duration: 0 }));
+  });
+});

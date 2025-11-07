@@ -1,63 +1,89 @@
-import { render, screen } from '@testing-library/react'
-import NavbarMenuItem from '../../../../components/ui/navbar/NavbarMenuItem'
+import { fireEvent, render, screen } from "@testing-library/react";
+import NavbarMenuItem from "@/components/ui/navbar/NavbarMenuItem";
+import type { NavbarMenuItemProps } from "@/components/ui/navbar";
+import { usePrefersReducedMotion } from "@/hooks";
 
-jest.mock('@base-ui-components/react/navigation-menu', () => ({
-  NavigationMenu: {
-    Item: ({ children }: any) => <div>{children}</div>,
-    Trigger: ({ children }: any) => <button>{children}</button>,
-    Icon: ({ children }: any) => <span>{children}</span>,
-    Content: ({ children }: any) => <div>{children}</div>,
-  },
-}))
+jest.mock("@/hooks", () => {
+  const actual = jest.requireActual("@/hooks");
+  return {
+    ...actual,
+    usePrefersReducedMotion: jest.fn(() => false),
+  };
+});
 
-describe('NavbarMenuItem', () => {
-  it('renders simple link without dropdown', () => {
-    render(<NavbarMenuItem name="Home" href="/" />)
-    expect(screen.getByText('Home')).toBeInTheDocument()
-  })
+describe("NavbarMenuItem", () => {
+  const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
-  it('renders dropdown when links are provided', () => {
-    const links = [
-      { title: 'Link 1', href: '/1' },
-      { title: 'Link 2', href: '/2' },
-    ]
-    render(<NavbarMenuItem name="Products" links={links} />)
-    expect(screen.getByText('Products')).toBeInTheDocument()
-  })
+  afterEach(() => {
+    mockUsePrefersReducedMotion.mockClear();
+  });
 
-  it('uses grid layout for 4 or fewer links', () => {
-    const links = [
-      { title: 'Link 1', href: '/1' },
-      { title: 'Link 2', href: '/2' },
-    ]
-    const { container } = render(
-      <NavbarMenuItem name="Products" links={links} layout="auto" />
-    )
-    const list = container.querySelector('ul')
-    expect(list?.className).toContain('grid')
-  })
+  it("renders a simple navigation link when no nested links are provided", () => {
+    render(<NavbarMenuItem name="Docs" href="/docs" />);
 
-  it('uses list layout for more than 4 links', () => {
-    const links = Array.from({ length: 6 }, (_, i) => ({
-      title: `Link ${i + 1}`,
-      href: `/${i + 1}`,
-    }))
-    const { container } = render(
-      <NavbarMenuItem name="Products" links={links} layout="auto" />
-    )
-    const list = container.querySelector('ul')
-    expect(list?.className).toContain('flex-col')
-  })
+    const link = screen.getByRole("link", { name: "Docs" });
+    expect(link).toHaveAttribute("href", "/docs");
+  });
 
-  it('respects explicit layout prop', () => {
-    const links = [
-      { title: 'Link 1', href: '/1' },
-      { title: 'Link 2', href: '/2' },
-    ]
-    const { container } = render(
-      <NavbarMenuItem name="Products" links={links} layout="list" />
-    )
-    const list = container.querySelector('ul')
-    expect(list?.className).toContain('flex-col')
-  })
-})
+  it("falls back to a placeholder href when no destination is supplied", () => {
+    render(<NavbarMenuItem name="Docs" />);
+
+    const link = screen.getByRole("link", { name: "Docs" });
+    expect(link).toHaveAttribute("href", "#");
+  });
+
+  it("renders nested links inside a dropdown and sanitizes descriptions", () => {
+    const links: NavbarMenuItemProps["links"] = [
+      {
+        title: "Overview",
+        href: "/overview",
+        description: "<strong>Start</strong><script>window.bad()</script>",
+      },
+      {
+        title: "Tutorials",
+        href: "/tutorials",
+        description: "Guided lessons",
+      },
+    ];
+
+    const { getByTestId, getByText, rerender } = render(
+      <NavbarMenuItem name="Resources" links={links} layout="grid" gridCols={3} />
+    );
+
+    const trigger = screen.getByRole("button", { name: /Resources/ });
+    expect(trigger).toBeInTheDocument();
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.pointerEnter(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.pointerLeave(trigger);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+    const sanitized = getByText("Start");
+    expect(sanitized.innerHTML).toContain("Start");
+    expect(screen.queryByText("window.bad()")).toBeNull();
+
+    // Trigger the memoized layout recalculation by changing the props
+    const updatedLinks = [...links!, { title: "API", href: "/api" }];
+    rerender(<NavbarMenuItem name="Resources" links={updatedLinks} layout="auto" gridCols={4} />);
+
+    // Each nested item renders inside an li element
+    const nestedItems = getByTestId("navigation-content").querySelectorAll("li");
+    expect(nestedItems.length).toBe(updatedLinks.length);
+  });
+
+  it("disables motion styles when the user prefers reduced motion", () => {
+    mockUsePrefersReducedMotion.mockReturnValueOnce(true);
+
+    const links: NavbarMenuItemProps["links"] = [
+      { title: "Item", href: undefined },
+    ];
+
+    render(<NavbarMenuItem name="Settings" links={links} />);
+
+    const content = screen.getByTestId("navigation-content");
+    expect(content).toHaveStyle({ transition: "none" });
+    expect(content.querySelector("li")?.textContent).toContain("Item");
+  });
+});
