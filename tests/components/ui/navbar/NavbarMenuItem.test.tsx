@@ -69,7 +69,7 @@ describe("NavbarMenuItem", () => {
     rerender(<NavbarMenuItem name="Resources" links={updatedLinks} layout="auto" gridCols={4} />);
 
     // Each nested item renders inside an li element
-    const nestedItems = getByTestId("navigation-content").querySelectorAll("li");
+    const nestedItems = getByTestId("navigation-content").querySelectorAll("div[data-testid='navbar-nested-menu-item']");
     expect(nestedItems.length).toBe(updatedLinks.length);
   });
 
@@ -84,6 +84,6 @@ describe("NavbarMenuItem", () => {
 
     const content = screen.getByTestId("navigation-content");
     expect(content).toHaveStyle({ transition: "none" });
-    expect(content.querySelector("li")?.textContent).toContain("Item");
+    expect(content.querySelector("div[data-testid='navbar-nested-menu-item']")?.textContent).toContain("Item");
   });
 });

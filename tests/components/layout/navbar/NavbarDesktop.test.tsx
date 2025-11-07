@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import NavbarDesktop from "@/components/layout/navbar/NavbarDesktop";
+import NavbarDesktop from "@/components/ui/navbar/NavbarDesktop";
 import type { NavbarMenuItemProps } from "@/components/ui/navbar";
 
 describe("NavbarDesktop", () => {

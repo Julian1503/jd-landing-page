@@ -1,6 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import NavbarMobile from "@/components/layout/navbar/NavbarMobile";
-import type { NavbarMenuItemProps } from "@/components/ui/navbar";
+import { NavbarMenuItemProps, NavbarMobile } from "@/components/ui/navbar";
 import { usePrefersReducedMotion } from "@/hooks";
 
 jest.mock("@/hooks", () => {

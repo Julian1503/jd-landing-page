@@ -97,7 +97,7 @@ const NavbarMenuItem = ({
       >
         <div className={containerClass}>
           {links.map((item, idx) => (
-            <div key={`${generateLinkKey(item.href ?? "", idx)}`}>
+            <div data-testid='navbar-nested-menu-item' key={`${generateLinkKey(item.href ?? "", idx)}`}>
               <NavbarNestedMenuItem link={item} />
             </div>
           ))}
