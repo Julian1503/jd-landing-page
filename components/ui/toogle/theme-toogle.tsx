@@ -7,16 +7,15 @@ import { cn } from "@/lib/utils";
 import { ThemeToggleProps } from "./types";
 import { SIZES } from "./constants";
 
-const ThemeToggle = ({ 
-  className, 
+const ThemeToggle = ({
+  className,
   showLabel = false,
-  size = "md" 
+  size = "md",
 }: ThemeToggleProps) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
   const [hasUserPreference, setHasUserPreference] = useState(false);
 
-  // Detect system preference on mount
   useEffect(() => {
     const stored = localStorage.getItem("theme");
 
@@ -43,11 +42,9 @@ const ThemeToggle = ({
     return () => mq.removeEventListener("change", onChange);
   }, [mounted, hasUserPreference]);
 
-  // Apply theme to document
   useEffect(() => {
     if (!mounted) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
-    // Store preference in localStorage
     if (hasUserPreference) {
       localStorage.setItem("theme", theme);
     } else {
@@ -55,7 +52,6 @@ const ThemeToggle = ({
     }
   }, [theme, mounted, hasUserPreference]);
 
-  // Prevent hydration mismatch
   if (!mounted) {
     return (
       <div className={cn("flex items-center", SIZES[size].wrapper, className)}>
@@ -68,8 +64,15 @@ const ThemeToggle = ({
   const isDark = theme === "dark";
 
   return (
-    <div className={cn("flex items-center", SIZES[size].wrapper, className)}>
-      {/* Icon indicator */}
+    <div
+      role="group"
+      aria-labelledby="theme-toggle-label"
+      className={cn("flex items-center", SIZES[size].wrapper, className)}
+    >
+      <span id="theme-toggle-label" className="sr-only">
+        Theme
+      </span>
+
       <div className="text-muted-foreground transition-colors">
         {isDark ? (
           <Moon className={SIZES[size].icon} aria-hidden="true" />
@@ -78,17 +81,16 @@ const ThemeToggle = ({
         )}
       </div>
 
-      {/* Switch */}
       <Switch.Root
         checked={isDark}
         onCheckedChange={(checked: boolean) => {
           setHasUserPreference(true);
           setTheme(checked ? "dark" : "light");
         }}
-        aria-label="Toggle dark mode"
+        aria-label={showLabel ? undefined : "Toggle dark mode"}
         className={cn(
           "relative cursor-pointer rounded-full border border-border",
-          "bg-muted data-checked:bg-primary transition-colors",
+          "bg-muted data-checked:bg-secondary transition-colors",
           "focus-visible:outline-2 focus-visible:outline-offset-2",
           "focus-visible:outline-ring",
           SIZES[size].switch
@@ -96,14 +98,13 @@ const ThemeToggle = ({
       >
         <Switch.Thumb
           className={cn(
-            "absolute top-1/2 -translate-y-1/2 rounded-full bg-card",
+            "absolute top-1/2 -translate-y-1/2 rounded-full bg-foreground",
             "shadow-md transition-transform duration-200 ease-in-out",
             SIZES[size].thumb
           )}
         />
       </Switch.Root>
 
-      {/* Optional label */}
       {showLabel && (
         <span className="text-sm font-medium text-foreground">
           {isDark ? "Dark" : "Light"}
@@ -111,6 +112,6 @@ const ThemeToggle = ({
       )}
     </div>
   );
-}
+};
 
 export default ThemeToggle;
