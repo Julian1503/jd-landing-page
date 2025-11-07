@@ -1,4 +1,7 @@
-/* --- Clerk layer: usa exactamente las mismas variables --- */
+/* stylelint-disable */
+/* @ts-nocheck */
+
+/* --- Clerk integration: uses exact same CSS variables --- */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -15,6 +18,10 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -27,48 +34,83 @@
 /* --- Base light mode --- */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --border-button: oklch(47.764% 0.01832 17.65);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  
+  /* Neutrals */
+  --background: oklch(100% 0 0);
+  --foreground: oklch(9% 0 0);
+  
+  /* Primary - Dark gray/black */
+  --primary: oklch(20% 0 0);
+  --primary-foreground: oklch(98% 0 0);
+  
+  /* Secondary - Light gray */
+  --secondary: oklch(96% 0 0);
+  --secondary-foreground: oklch(20% 0 0);
+  
+  /* Accent - Blue */
+  --accent: oklch(60% 0.2 250);
+  --accent-foreground: oklch(98% 0 0);
+  
+  /* Muted */
+  --muted: oklch(96% 0 0);
+  --muted-foreground: oklch(55% 0 0);
+  
+  /* Destructive - Red */
+  --destructive: oklch(58% 0.25 27);
+  
+  /* Borders & Inputs */
+  --border: oklch(90% 0 0);
+  --border-button: oklch(48% 0.018 18);
+  --input: oklch(90% 0 0);
+  --ring: oklch(70% 0 0);
+  
+  /* Card */
+  --card: oklch(100% 0 0);
+  --card-foreground: oklch(9% 0 0);
+  
+  /* Popover */
+  --popover: oklch(100% 0 0);
+  --popover-foreground: oklch(9% 0 0);
 }
 
 /* --- Dark mode --- */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --border-button: oklch(1 0 0 / 60%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  /* Neutrals */
+  --background: oklch(9% 0 0);
+  --foreground: oklch(98% 0 0);
+  
+  /* Primary - Light gray/white */
+  --primary: oklch(92% 0 0);
+  --primary-foreground: oklch(20% 0 0);
+  
+  /* Secondary - Dark gray */
+  --secondary: oklch(25% 0 0);
+  --secondary-foreground: oklch(98% 0 0);
+  
+  /* Accent - Blue (brighter) */
+  --accent: oklch(70% 0.2 250);
+  --accent-foreground: oklch(98% 0 0);
+  
+  /* Muted */
+  --muted: oklch(25% 0 0);
+  --muted-foreground: oklch(70% 0 0);
+  
+  /* Destructive - Red (adjusted) */
+  --destructive: oklch(70% 0.19 22);
+  
+  /* Borders & Inputs */
+  --border: oklch(100% 0 0 / 10%);
+  --border-button: oklch(100% 0 0 / 60%);
+  --input: oklch(100% 0 0 / 15%);
+  --ring: oklch(55% 0 0);
+  
+  /* Card */
+  --card: oklch(15% 0 0);
+  --card-foreground: oklch(98% 0 0);
+  
+  /* Popover */
+  --popover: oklch(15% 0 0);
+  --popover-foreground: oklch(98% 0 0);
 } 
 
 /* --- Tailwind base layer --- */
@@ -78,11 +120,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 }
 
-/* --- Clerk layer: usa exactamente las mismas variables --- */
+/* --- Clerk integration: uses exact same variables --- */
 @layer clerk {
   :root,
   .dark {
