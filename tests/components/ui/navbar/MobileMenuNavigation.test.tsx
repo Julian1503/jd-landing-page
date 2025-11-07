@@ -15,7 +15,7 @@ describe("MobileMenuNavigation", () => {
   const mockUsePrefersReducedMotion = usePrefersReducedMotion as jest.Mock;
 
   const baseItems: MobileMenuNavigationProps["items"] = [
-    { name: "Home", href: "/home", description: "Go home" },
+    { name: "Home", href: "/home", },
     {
       name: "Products",
       links: [
@@ -23,7 +23,7 @@ describe("MobileMenuNavigation", () => {
         { title: "Product B", href: "/products/b", description: "Second" },
       ],
     },
-    { name: "Placeholder", href: "", description: "Coming soon" },
+    { name: "Placeholder", href: "",},
   ];
 
   afterEach(() => {

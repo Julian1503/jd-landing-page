@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import MobileMenuPanel from "@/components/ui/navbar/NavbarMobile/MobileMenuPanel";
+import { NavbarMenuItemProps } from "@/components/ui/navbar";
 
 describe("MobileMenuPanel", () => {
   const items = [
@@ -11,7 +12,7 @@ describe("MobileMenuPanel", () => {
       ],
     },
     { name: "Contact", href: "/contact", description: "Reach us" },
-  ] as const;
+  ] as Readonly<NavbarMenuItemProps[]>;
 
   it("renders navigation content and resets state on close", () => {
     (globalThis as any).__setClerkSignedIn(true);
