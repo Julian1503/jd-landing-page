@@ -85,7 +85,7 @@ const NavbarNestedMenuItem = ({ link, depth = 0 }: NavbarNestedMenuItemProps) =>
               )}
             </div>
             <div className="flex flex-1 items-center justify-end w-5">
-              <NavigationMenu.Icon className="absolute top-1/2 right-2.5 flex h-2.5 w-2.5 -translate-y-1/2 items-center justify-center transition-transform duration-200 ease-in-out data-[popup-open]:rotate-180">
+              <NavigationMenu.Icon className="absolute top-1/2 right-2.5 flex h-2.5 w-2.5 -translate-y-1/2 items-center justify-center transition-transform duration-200 ease-in-out data-popup-open:rotate-180">
                 <ChevronRightIcon aria-hidden="true" />
               </NavigationMenu.Icon>
             </div>
