@@ -1,3 +1,4 @@
+"use client";
 import { NavbarLinkContentProps } from "@/components/ui/navbar";
 import { memo } from "react";
 import DOMPurify from 'isomorphic-dompurify';

@@ -5,7 +5,7 @@
 import {
   NavbarDesktop,
   NavbarMobile,
-} from "@/components/layout/navbar";
+} from "@/components/ui/navbar";
 
 import { data } from "@/components/layout/navbar/constants";
 import { NavbarProps } from "@/components/layout/navbar/types";

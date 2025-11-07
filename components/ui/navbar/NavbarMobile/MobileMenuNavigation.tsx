@@ -5,15 +5,15 @@ import {
   MOBILE_SECTION_TITLE_CLASS,
   MOBILE_NAV_ITEM_CLASS,
   MOBILE_ICON_CLASS,
-} from "@/components/ui/navbar/constants";
-import { MobileMenuNavigationProps, MobileNavigationItem } from "@/components/ui/navbar/types";
+} from "@/components/ui/navbar/NavbarMobile";
+import { MobileMenuNavigationProps, MobileNavigationItem } from "@/components/ui/navbar/NavbarMobile";
 import { getStaggerDelay } from "@/components/ui/navbar/utils";
 import { usePrefersReducedMotion } from "@/hooks";
 
 /**
  * Convert NavbarMenuItemProps to MobileNavigationItem
  */
-const convertToMobileItem = (item: any): MobileNavigationItem => ({
+const convertToMobileItem = (item: any):   MobileNavigationItem => ({
   title: item.name || item.title,
   href: item.href,
   description: item.description,

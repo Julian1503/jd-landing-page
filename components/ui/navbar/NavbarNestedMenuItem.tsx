@@ -1,3 +1,4 @@
+"use client";
 import { NavigationMenu } from "@base-ui-components/react/navigation-menu";
 import Link from "next/link";
 import { ArrowIcon, ChevronRightIcon } from "@/components/icons";
@@ -8,7 +9,6 @@ import {
   NAV_POPUP_CLASS,
   NAV_ARROW_CLASS,
   NAV_ANIMATION_STYLE,
-  NestedLink,
   NavbarLinkContent,
 } from "@/components/ui/navbar";
 import { usePrefersReducedMotion } from "@/hooks";
