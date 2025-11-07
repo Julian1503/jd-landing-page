@@ -48,9 +48,6 @@ const MobileMenuUserHeader = () => {
             {user?.primaryEmailAddress?.emailAddress || user?.username}
           </p>
         </div>
-        <div className="flex items-center justify-center shrink-0">
-          <ThemeToggle />
-        </div>
       </div>
     </motion.div>
   );
