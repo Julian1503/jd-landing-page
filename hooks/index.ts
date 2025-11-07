@@ -3,3 +3,4 @@ export * from "./useScrollLock";
 export * from "./useHeaderHeight";
 export * from "./usePrefersReduceMotion";
 export * from "./useFocusTrap";
+export * from "./useNavbarNavigation";
